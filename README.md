@@ -1,6 +1,14 @@
 # goutils
 Golang utils
 
+## string
+
+### SpliteAfter
+
+## slice
+
+### SliceRemove
+
 ## file
 
 ### ReadLines
@@ -16,5 +24,4 @@ Golang utils
     func main() {
         	goutils.ReadLines("/tmp/file.txt", read)
     }
-
 

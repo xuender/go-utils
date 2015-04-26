@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-// File read line
-func ReadLines(file string, read func(line string)) error {
+// Read one line, where “line” is a sequence of bytes ending with \n.
+func ReadLines(file string, read func(string)) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
