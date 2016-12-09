@@ -7,7 +7,9 @@ Golang utils
 
 ## slice
 
-### SliceRemove
+### Remove
+
+### Contains
 
 ## file
 
