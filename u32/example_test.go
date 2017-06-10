@@ -57,7 +57,7 @@ func ExampleSet_Len() {
 	// 3
 }
 
-func ExampleCountSet_Count() {
+func ExampleSetCount_Count() {
 	sc := SetCount{}
 	sc.Add(NewSet(1, 2, 3))
 	sc.Add(NewSet(2, 3, 4), NewSet(4, 5, 6))
