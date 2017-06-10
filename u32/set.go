@@ -7,7 +7,7 @@ import (
 
 type Set map[uint32]bool
 
-func New(nums ...uint32) *Set {
+func NewSet(nums ...uint32) *Set {
 	s := make(Set, len(nums))
 	s.Add(nums...)
 	return &s
@@ -106,7 +106,7 @@ func (a Set) Intersect(sets ...*Set) {
 }
 
 func (a Set) Retain(nums ...uint32) {
-	a.Intersect(New(nums...))
+	a.Intersect(NewSet(nums...))
 }
 
 func (a *Set) Contain(sets ...*Set) bool {
