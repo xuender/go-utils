@@ -1,8 +1,9 @@
 package goutils
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
 	"testing"
+
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestContains(t *testing.T) {
@@ -39,29 +40,31 @@ func TestRemove(t *testing.T) {
 		})
 		Convey("fail", func() {
 			Remove(&s, 7)
-			Remove(&s, func(i int)bool{
+			Remove(&s, func(i int) bool {
 				return i > 100
 			})
 			So(len(s), ShouldEqual, 4)
 		})
 	})
 }
+
+/*
 func TestFilter(t *testing.T) {
-	Convey("Filter", t, func(){
+	Convey("Filter", t, func() {
 		s := []int{1, 2, 4, 5}
-		d:= []int{1}
+		d := []int{1}
 		Convey("success", func() {
-			Filter(&s,&d, func(i interface{}) bool {
+			Filter(&s, &d, func(i interface{}) bool {
 				return i == 4
 			})
 			So(len(d), ShouldEqual, 1)
-			Filter(&s,&d, func(i int) bool {
-				return i % 2 == 0
+			Filter(&s, &d, func(i int) bool {
+				return i%2 == 0
 			})
 			So(len(d), ShouldEqual, 2)
 		})
 		Convey("fail", func() {
 		})
-
 	})
 }
+*/

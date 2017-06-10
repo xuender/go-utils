@@ -25,6 +25,7 @@ func Contains(slice, lambdaOrElement interface{}) bool {
 	}
 	return false
 }
+
 // Remove element by lambda or element
 func Remove(slice, lambdaOrElement interface{}) int {
 	sv := reflect.ValueOf(slice).Elem()
@@ -43,7 +44,7 @@ func Remove(slice, lambdaOrElement interface{}) int {
 		}
 		if isRemove {
 			before := sv.Slice(0, i)
-			after := sv.Slice(i + 1, sv.Len())
+			after := sv.Slice(i+1, sv.Len())
 			reflect.Copy(sv, reflect.AppendSlice(before, after))
 			sv.SetLen(sv.Len() - 1)
 			ret += 1
@@ -52,4 +53,3 @@ func Remove(slice, lambdaOrElement interface{}) int {
 	}
 	return ret
 }
-

@@ -1,13 +1,15 @@
 package goutils
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
 	"testing"
+
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func read(line string) {
 
 }
+
 func TestReadLines(t *testing.T) {
 	Convey("Read Lines", t, func() {
 		Convey("error file", func() {

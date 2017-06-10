@@ -1,29 +1,13 @@
 # goutils
 Golang utils
 
-## string
-
-### SpliteAfter
-
-## slice
-
-### Remove
-
-### Contains
+## bytes
 
 ## file
 
-### ReadLines
+## set
 
-    package main
-    import (
-        	"fmt"
-        	"github.com/xuender/goutils"
-    )    
-    func read(line string) {
-        	fmt.Print(line)
-    }
-    func main() {
-        	goutils.ReadLines("/tmp/file.txt", read)
-    }
+## string
+
+## slice
 
