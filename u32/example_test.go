@@ -9,7 +9,7 @@ func ExampleNewSet() {
 	// [1 2 3]
 }
 
-func ExampleAdd() {
+func ExampleSetAdd() {
 	set := NewSet(1, 2)
 	set.Add(4)
 	set.Add(3, 2, 1, 4)
@@ -18,7 +18,7 @@ func ExampleAdd() {
 	// [1 2 3 4]
 }
 
-func ExampleClear() {
+func ExampleSetClear() {
 	set := NewSet(1, 2, 3)
 	fmt.Println(set.Numbers())
 	set.Clear()
@@ -26,4 +26,26 @@ func ExampleClear() {
 	// Output:
 	// [1 2 3]
 	// []
+}
+
+func ExampleSetHas() {
+	set := NewSet(6, 3)
+	fmt.Println(set.Has(3))
+	fmt.Println(set.Has(6))
+	fmt.Println(set.Has(5))
+	fmt.Println(set.Has(3, 6))
+	fmt.Println(set.Has(3, 6, 5))
+	// Output:
+	// true
+	// true
+	// false
+	// true
+	// false
+}
+
+func ExampleSetHit() {
+	set := NewSet(1, 2, 3)
+	fmt.Println(set.Hit(2, 3, 4, 5))
+	// Output:
+	// 2
 }

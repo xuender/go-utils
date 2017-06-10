@@ -59,6 +59,16 @@ func (a Set) Has(nums ...uint32) bool {
 	return true
 }
 
+func (a Set) Hit(nums ...uint32) int {
+	ret := 0
+	for _, i := range nums {
+		if _, ok := a[i]; ok {
+			ret += 1
+		}
+	}
+	return ret
+}
+
 func (a Set) Numbers() []uint32 {
 	ret := make([]uint32, 0, len(a))
 	for n := range a {

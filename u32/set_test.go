@@ -13,16 +13,6 @@ func TestSetAdd(t *testing.T) {
 	})
 }
 
-func TestSetHas(t *testing.T) {
-	Convey("Add", t, func() {
-		set := NewSet(6, 3)
-		So(set.Has(3), ShouldEqual, true)
-		So(set.Has(6), ShouldEqual, true)
-
-		So(set.Has(5), ShouldEqual, false)
-	})
-}
-
 func TestSetNumbers(t *testing.T) {
 	Convey("Numbers", t, func() {
 		Convey("[]uint32{3, 6}", func() {
