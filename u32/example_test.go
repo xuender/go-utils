@@ -57,11 +57,13 @@ func ExampleSet_Len() {
 	// 3
 }
 
-func ExampleCountSet() {
-	s1 := NewSet(1, 2, 3)
-	s2 := NewSet(2, 3, 4)
-	s3 := NewSet(4, 5, 6)
-	fmt.Println(CountSet(s1, s2, s3))
+func ExampleCountSet_Count() {
+	sc := SetCount{}
+	sc.Add(NewSet(1, 2, 3))
+	sc.Add(NewSet(2, 3, 4), NewSet(4, 5, 6))
+	fmt.Println(len(sc))
+	fmt.Println(sc.Count())
 	// Output:
+	// 6
 	// [{2 2} {3 2} {4 2} {1 1} {5 1} {6 1}]
 }

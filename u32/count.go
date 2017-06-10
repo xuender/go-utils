@@ -7,8 +7,9 @@ type Count struct {
 	Sum uint8
 }
 
-func CountSet(sets ...*Set) []Count {
-	m := make(map[uint32]*Count)
+type SetCount map[uint32]*Count
+
+func (m SetCount) Add(sets ...*Set) {
 	for _, set := range sets {
 		for k := range *set {
 			if mv, ok := m[k]; ok {
@@ -18,6 +19,9 @@ func CountSet(sets ...*Set) []Count {
 			}
 		}
 	}
+}
+
+func (m SetCount) Count() []Count {
 	ret := make([]Count, len(m))
 	i := 0
 	for _, v := range m {
