@@ -42,7 +42,7 @@ func (a Set) Copy() Set {
 	return r
 }
 
-func (a *Set) Count() int {
+func (a *Set) Len() int {
 	return len(*a)
 }
 

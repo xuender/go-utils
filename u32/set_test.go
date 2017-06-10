@@ -46,14 +46,6 @@ func TestSetCopy(t *testing.T) {
 	})
 }
 
-func TestSetCount(t *testing.T) {
-	Convey("Count", t, func() {
-		a := NewSet(3, 4, 5)
-		a.Add(4, 5, 6)
-		So(a.Count(), ShouldEqual, 4)
-	})
-}
-
 func TestSetComplement(t *testing.T) {
 	Convey("Complement", t, func() {
 		a := NewSet(3, 4, 5)

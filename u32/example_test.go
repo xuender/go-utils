@@ -49,3 +49,19 @@ func ExampleSet_Hit() {
 	// Output:
 	// 2
 }
+
+func ExampleSet_Len() {
+	set := NewSet(1, 2, 3, 3)
+	fmt.Println(set.Len())
+	// Output:
+	// 3
+}
+
+func ExampleCountSet() {
+	s1 := NewSet(1, 2, 3)
+	s2 := NewSet(2, 3, 4)
+	s3 := NewSet(4, 5, 6)
+	fmt.Println(CountSet(s1, s2, s3))
+	// Output:
+	// [{2 2} {3 2} {4 2} {1 1} {5 1} {6 1}]
+}
