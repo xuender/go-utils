@@ -31,15 +31,15 @@ func ExampleUniqueId() {
 	fmt.Println(UniqueId("K-"))
 	fmt.Println(UniqueId("K-"))
 	// Output:
-	// U-0
-	// K-1
+	// U-1
 	// K-2
+	// K-3
 }
 
 func ExampleUniqueUint32() {
 	fmt.Println(UniqueUint32())
 	fmt.Println(UniqueUint32())
 	// Output:
-	// 3
 	// 4
+	// 5
 }

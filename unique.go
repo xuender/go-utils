@@ -20,8 +20,8 @@ func init() {
 		var id uint32
 		id = 0
 		for {
-			chId <- id
 			id += 1
+			chId <- id
 		}
 	}()
 }
