@@ -2,6 +2,7 @@ package ob
 
 import (
 	"fmt"
+	"sort"
 	"time"
 )
 
@@ -31,6 +32,7 @@ func ExampleNewOb() {
 		}
 	}()
 	// }
+	sort.Ints(ret)
 	time.Sleep(1e9)
 	fmt.Println(ret)
 	// Output:

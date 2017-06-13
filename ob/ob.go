@@ -13,7 +13,7 @@ type Ob struct {
 func NewOb(maker Maker) *Ob {
 	ret := &Ob{
 		DataMaker: maker,
-		ChSuck:    make(chan Suck),
+		ChSuck:    make(chan Suck, 1),
 		ChMap:     make(map[uint32]chan interface{}),
 	}
 	go ret.run()
@@ -33,7 +33,7 @@ func (ob *Ob) run() {
 }
 
 func (ob *Ob) NewSuck() Suck {
-	ch := make(chan interface{})
+	ch := make(chan interface{}, 1)
 	e := Suck{Id: goutils.UniqueUint32(), ChData: ch}
 	ob.ChSuck <- e
 	return e
