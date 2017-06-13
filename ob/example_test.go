@@ -6,7 +6,6 @@ import (
 )
 
 type testMaker struct {
-	Max int
 }
 
 func (t *testMaker) Make(o *Ob) {
@@ -21,7 +20,6 @@ func (t *testMaker) Make(o *Ob) {
 
 func ExampleNewOb() {
 	tm := new(testMaker)
-	tm.Max = 20
 	o := NewOb(tm)
 	ret := make([]int, 0)
 	// for i := 0; i < 2; i++ {
