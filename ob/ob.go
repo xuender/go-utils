@@ -23,7 +23,7 @@ func NewOb(maker Maker) *Ob {
 func (ob *Ob) run() {
 	for {
 		suck := <-ob.ChSuck
-		if suck.Remove {
+		if suck.Close {
 			delete(ob.ChMap, suck.Id)
 		} else {
 			ob.ChMap[suck.Id] = suck.ChData
@@ -40,14 +40,14 @@ func (ob *Ob) NewSuck() Suck {
 }
 
 func (ob *Ob) Close(suck Suck) {
-	suck.Remove = true
+	suck.Close = true
 	ob.ChSuck <- suck
 }
 
 func (ob *Ob) Notify(data interface{}) bool {
 	select {
 	case suck := <-ob.ChSuck:
-		if suck.Remove {
+		if suck.Close {
 			delete(ob.ChMap, suck.Id)
 		} else {
 			ob.ChMap[suck.Id] = suck.ChData
