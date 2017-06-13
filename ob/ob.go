@@ -5,14 +5,16 @@ import (
 )
 
 type Ob struct {
-	ChMap  map[uint32]chan interface{}
-	ChSuck chan Suck
+	ChMap   map[uint32]chan interface{}
+	ChSuck  chan Suck
+	MakeNum uint32
 }
 
 func NewOb(makeFunc func(ob *Ob)) *Ob {
 	ob := &Ob{
-		ChMap:  make(map[uint32]chan interface{}),
-		ChSuck: make(chan Suck, 1),
+		ChMap:   make(map[uint32]chan interface{}),
+		ChSuck:  make(chan Suck, 1),
+		MakeNum: 0,
 	}
 	go func() {
 		for {
@@ -22,8 +24,9 @@ func NewOb(makeFunc func(ob *Ob)) *Ob {
 			} else {
 				ob.ChMap[suck.Id] = suck.ChData
 			}
-			if len(ob.ChMap) > 0 {
+			for len(ob.ChMap) > 0 {
 				makeFunc(ob)
+				ob.MakeNum += 1
 			}
 		}
 	}()

@@ -13,7 +13,7 @@ func ExampleNewOb() {
 			if !ob.Notify(i) {
 				return
 			}
-			i++
+			i += 1
 		}
 	})
 	ret := make([]int, 0)
