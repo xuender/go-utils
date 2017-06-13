@@ -20,49 +20,49 @@ func NewOb(maker Maker) *Ob {
 	return ret
 }
 
-func (s *Ob) run() {
+func (ob *Ob) run() {
 	for {
-		suck := <-s.ChSuck
+		suck := <-ob.ChSuck
 		if suck.Remove {
-			delete(s.ChMap, suck.Id)
+			delete(ob.ChMap, suck.Id)
 		} else {
-			s.ChMap[suck.Id] = suck.ChData
-			s.DataMaker.Make(s)
+			ob.ChMap[suck.Id] = suck.ChData
+			ob.DataMaker.Make(ob)
 		}
 	}
 }
 
-func (s *Ob) NewSuck() Suck {
+func (ob *Ob) NewSuck() Suck {
 	ch := make(chan interface{})
 	e := Suck{Id: goutils.UniqueUint32(), ChData: ch}
-	s.ChSuck <- e
+	ob.ChSuck <- e
 	return e
 }
 
-func (s *Ob) Close(suck Suck) {
+func (ob *Ob) Close(suck Suck) {
 	suck.Remove = true
-	s.ChSuck <- suck
+	ob.ChSuck <- suck
 }
 
-func (s *Ob) Notify(data interface{}) bool {
+func (ob *Ob) Notify(data interface{}) bool {
 	select {
-	case suck := <-s.ChSuck:
+	case suck := <-ob.ChSuck:
 		if suck.Remove {
-			delete(s.ChMap, suck.Id)
+			delete(ob.ChMap, suck.Id)
 		} else {
-			s.ChMap[suck.Id] = suck.ChData
+			ob.ChMap[suck.Id] = suck.ChData
 		}
-		return s.update(data)
+		return ob.update(data)
 	default:
-		return s.update(data)
+		return ob.update(data)
 	}
 }
 
-func (s *Ob) update(data interface{}) bool {
-	if len(s.ChMap) == 0 {
+func (ob *Ob) update(data interface{}) bool {
+	if len(ob.ChMap) == 0 {
 		return false
 	}
-	for _, ch := range s.ChMap {
+	for _, ch := range ob.ChMap {
 		ch <- data
 	}
 	return true

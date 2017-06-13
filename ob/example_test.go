@@ -20,14 +20,14 @@ func (t *testMaker) Make(o *Ob) {
 
 func ExampleNewOb() {
 	tm := new(testMaker)
-	o := NewOb(tm)
+	ob := NewOb(tm)
 	ret := make([]int, 0)
-	// for i := 0; i < 2; i++ {
+	// for f := 0; f < 2; f++ {
 	go func() {
-		e := o.NewSuck()
-		defer o.Close(e)
+		suck := ob.NewSuck()
+		defer ob.Close(suck)
 		for i := 0; i < 10; i++ {
-			ret = append(ret, (<-e.ChData).(int))
+			ret = append(ret, (<-suck.ChData).(int))
 		}
 	}()
 	// }
