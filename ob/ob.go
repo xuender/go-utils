@@ -27,6 +27,8 @@ func (ob *Ob) run() {
 			delete(ob.ChMap, suck.Id)
 		} else {
 			ob.ChMap[suck.Id] = suck.ChData
+		}
+		if len(ob.ChMap) > 0 {
 			ob.DataMaker.Make(ob)
 		}
 	}

@@ -27,14 +27,14 @@ func ExampleNewOb() {
 	go func() {
 		suck := ob.NewSuck()
 		defer ob.Close(suck)
-		for i := 0; i < 10; i++ {
+		for i := 0; i < 3; i++ {
 			ret = append(ret, (<-suck.ChData).(int))
 		}
 	}()
 	// }
-	sort.Ints(ret)
 	time.Sleep(1e9)
+	sort.Ints(ret)
 	fmt.Println(ret)
 	// Output:
-	// [0 1 2 3 4 5 6 7 8 9]
+	// [0 1 2]
 }
