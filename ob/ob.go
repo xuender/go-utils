@@ -5,56 +5,52 @@ import (
 )
 
 type Ob struct {
-	Observers  map[uint32]chan interface{}
-	ChEvent    chan Event
-	Observable Maker
+	ChMap     map[uint32]chan interface{}
+	ChSuck    chan Suck
+	DataMaker Maker
 }
 
 func NewOb(maker Maker) *Ob {
 	ret := &Ob{
-		Observable: maker,
-		ChEvent:    make(chan Event),
-		Observers:  make(map[uint32]chan interface{}),
+		DataMaker: maker,
+		ChSuck:    make(chan Suck),
+		ChMap:     make(map[uint32]chan interface{}),
 	}
 	go ret.run()
 	return ret
 }
 
-func (s *Ob) Add() Event {
-	ch := make(chan interface{})
-	e := Event{Id: goutils.UniqueUint32(), ChOut: ch}
-	s.ChEvent <- e
-	return e
-}
-
-func (s *Ob) Remove(event Event) {
-	event.Remove = true
-	s.ChEvent <- event
-}
-
 func (s *Ob) run() {
 	for {
-		event := <-s.ChEvent
-		if event.Remove {
-			// fmt.Printf("删除:%d\n", event.Id)
-			delete(s.Observers, event.Id)
+		suck := <-s.ChSuck
+		if suck.Remove {
+			delete(s.ChMap, suck.Id)
 		} else {
-			// fmt.Printf("增加:%d\n", event.Id)
-			s.Observers[event.Id] = event.ChOut
-			s.Observable.Make(s)
+			s.ChMap[suck.Id] = suck.ChData
+			s.DataMaker.Make(s)
 		}
 	}
 }
 
+func (s *Ob) NewSuck() Suck {
+	ch := make(chan interface{})
+	e := Suck{Id: goutils.UniqueUint32(), ChData: ch}
+	s.ChSuck <- e
+	return e
+}
+
+func (s *Ob) Close(suck Suck) {
+	suck.Remove = true
+	s.ChSuck <- suck
+}
+
 func (s *Ob) Notify(data interface{}) bool {
 	select {
-	case event := <-s.ChEvent:
-		if event.Remove {
-			// fmt.Printf("删除:%d\n", event.Id)
-			delete(s.Observers, event.Id)
+	case suck := <-s.ChSuck:
+		if suck.Remove {
+			delete(s.ChMap, suck.Id)
 		} else {
-			// fmt.Printf("增加:%d\n", event.Id)
-			s.Observers[event.Id] = event.ChOut
+			s.ChMap[suck.Id] = suck.ChData
 		}
 		return s.update(data)
 	default:
@@ -63,10 +59,10 @@ func (s *Ob) Notify(data interface{}) bool {
 }
 
 func (s *Ob) update(data interface{}) bool {
-	if len(s.Observers) == 0 {
+	if len(s.ChMap) == 0 {
 		return false
 	}
-	for _, ch := range s.Observers {
+	for _, ch := range s.ChMap {
 		ch <- data
 	}
 	return true

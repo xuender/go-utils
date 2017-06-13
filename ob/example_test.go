@@ -2,44 +2,39 @@ package ob
 
 import (
 	"fmt"
-	"sort"
 	"time"
 )
 
-type TestMaker struct {
+type testMaker struct {
 	Max int
 }
 
-func (t *TestMaker) Make(o *Ob) {
-	for i := 0; i < t.Max; i++ {
+func (t *testMaker) Make(o *Ob) {
+	i := 0
+	for {
 		if !o.Notify(i) {
-			break
+			return
 		}
+		i++
 	}
 }
 
 func ExampleNewOb() {
-	tm := new(TestMaker)
+	tm := new(testMaker)
 	tm.Max = 20
 	o := NewOb(tm)
 	ret := make([]int, 0)
+	// for i := 0; i < 2; i++ {
 	go func() {
-		e := o.Add()
+		e := o.NewSuck()
+		defer o.Close(e)
 		for i := 0; i < 10; i++ {
-			ret = append(ret, (<-e.ChOut).(int))
+			ret = append(ret, (<-e.ChData).(int))
 		}
-		o.Remove(e)
 	}()
-	go func() {
-		e := o.Add()
-		for i := 0; i < 10; i++ {
-			ret = append(ret, (<-e.ChOut).(int))
-		}
-		o.Remove(e)
-	}()
-	time.Sleep(5e9)
-	sort.Ints(ret)
+	// }
+	time.Sleep(1e9)
 	fmt.Println(ret)
 	// Output:
-	// [0 0 1 1 2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9]
+	// [0 1 2 3 4 5 6 7 8 9]
 }
