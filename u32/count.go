@@ -28,6 +28,11 @@ func (m SetCount) Count() []Count {
 		ret[i] = *v
 		i++
 	}
-	sort.Sort(CountSlice(ret))
+	sort.Slice(ret, func(i, j int) bool {
+		if ret[i].Sum == ret[j].Sum {
+			return ret[i].Num < ret[j].Num
+		}
+		return ret[j].Sum < ret[i].Sum
+	})
 	return ret
 }
