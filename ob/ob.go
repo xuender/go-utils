@@ -5,33 +5,29 @@ import (
 )
 
 type Ob struct {
-	ChMap     map[uint32]chan interface{}
-	ChSuck    chan Suck
-	DataMaker Maker
+	ChMap  map[uint32]chan interface{}
+	ChSuck chan Suck
 }
 
-func NewOb(maker Maker) *Ob {
-	ret := &Ob{
-		DataMaker: maker,
-		ChSuck:    make(chan Suck, 1),
-		ChMap:     make(map[uint32]chan interface{}),
+func NewOb(makeFunc func(ob *Ob)) *Ob {
+	ob := &Ob{
+		ChMap:  make(map[uint32]chan interface{}),
+		ChSuck: make(chan Suck, 1),
 	}
-	go ret.run()
-	return ret
-}
-
-func (ob *Ob) run() {
-	for {
-		suck := <-ob.ChSuck
-		if suck.Close {
-			delete(ob.ChMap, suck.Id)
-		} else {
-			ob.ChMap[suck.Id] = suck.ChData
+	go func() {
+		for {
+			suck := <-ob.ChSuck
+			if suck.Close {
+				delete(ob.ChMap, suck.Id)
+			} else {
+				ob.ChMap[suck.Id] = suck.ChData
+			}
+			if len(ob.ChMap) > 0 {
+				makeFunc(ob)
+			}
 		}
-		if len(ob.ChMap) > 0 {
-			ob.DataMaker.Make(ob)
-		}
-	}
+	}()
+	return ob
 }
 
 func (ob *Ob) NewSuck() Suck {
