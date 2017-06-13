@@ -6,8 +6,7 @@ import (
 	"time"
 )
 
-type testMaker struct {
-}
+type testMaker struct{}
 
 func (t *testMaker) Make(o *Ob) {
 	i := 0
