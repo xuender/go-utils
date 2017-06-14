@@ -6,6 +6,7 @@ const (
 	typeDel
 	typeHas
 	typeLen
+	typeKey
 	typeErr
 )
 
@@ -45,6 +46,15 @@ func NewChMap() ChMap {
 				if _, ok := data[cb.Key]; ok {
 					delete(data, cb.Key)
 				}
+			case typeKey:
+				keys := make([]interface{}, len(data))
+				i := 0
+				for k := range data {
+					keys[i] = k
+					i += 1
+				}
+				cb.Value = keys
+				cb.ChBack <- cb
 			case typeErr:
 				close(chMap)
 				return
@@ -98,6 +108,17 @@ func (p ChMap) Len() int {
 	}
 	cb := <-ch
 	return cb.Value.(int)
+}
+
+func (p ChMap) Keys() []interface{} {
+	ch := make(chan CallBack, 1)
+	defer close(ch)
+	p <- CallBack{
+		ChBack: ch,
+		Type:   typeKey,
+	}
+	cb := <-ch
+	return cb.Value.([]interface{})
 }
 
 func (p ChMap) Del(key interface{}) {

@@ -6,8 +6,8 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestCmap(t *testing.T) {
-	Convey("Cmap", t, func() {
+func TestChMap(t *testing.T) {
+	Convey("ChMap", t, func() {
 		chMap := NewChMap()
 		defer chMap.Close()
 		chMap.Set("1", 1)
@@ -33,6 +33,10 @@ func TestCmap(t *testing.T) {
 		Convey("Del", func() {
 			chMap.Del("1")
 			So(chMap.Len(), ShouldEqual, 1)
+		})
+		Convey("Keys", func() {
+			keys := chMap.Keys()
+			So(len(keys), ShouldEqual, 2)
 		})
 	})
 }
