@@ -43,3 +43,18 @@ func ExampleUniqueUint32() {
 	// 4
 	// 5
 }
+
+func ExampleNewChMap() {
+	chMap := NewChMap()
+	defer chMap.Close()
+
+	chMap.Set("key", "value")
+	v, ok := chMap.Get("key")
+	fmt.Println(v, ok)
+	fmt.Println(chMap.Has("key"))
+	fmt.Println(chMap.Has("no key"))
+	// Output:
+	// value true
+	// true
+	// false
+}
