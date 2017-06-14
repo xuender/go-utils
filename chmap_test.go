@@ -9,6 +9,7 @@ import (
 func TestCmap(t *testing.T) {
 	Convey("Cmap", t, func() {
 		chMap := NewChMap()
+		defer chMap.Close()
 		chMap.Set("1", 1)
 		chMap.Set("2", 2)
 		Convey("Get", func() {

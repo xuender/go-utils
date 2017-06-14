@@ -46,6 +46,7 @@ func NewChMap() ChMap {
 					delete(data, cb.Key)
 				}
 			case typeErr:
+				close(chMap)
 				return
 			}
 		}
@@ -55,6 +56,7 @@ func NewChMap() ChMap {
 
 func (p ChMap) Get(key interface{}) (interface{}, bool) {
 	ch := make(chan CallBack, 1)
+	defer close(ch)
 	p <- CallBack{
 		Key:    key,
 		ChBack: ch,
@@ -77,6 +79,7 @@ func (p ChMap) Set(key, value interface{}) {
 
 func (p ChMap) Has(key interface{}) bool {
 	ch := make(chan CallBack, 1)
+	defer close(ch)
 	p <- CallBack{
 		Key:    key,
 		ChBack: ch,
@@ -88,6 +91,7 @@ func (p ChMap) Has(key interface{}) bool {
 
 func (p ChMap) Len() int {
 	ch := make(chan CallBack, 1)
+	defer close(ch)
 	p <- CallBack{
 		ChBack: ch,
 		Type:   typeLen,
