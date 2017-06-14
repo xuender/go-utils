@@ -48,7 +48,7 @@ func ExampleNewChMap() {
 	chMap := NewChMap()
 	defer chMap.Close()
 
-	chMap.Set("key", "value")
+	chMap.Put("key", "value")
 	v, ok := chMap.Get("key")
 	fmt.Println(v, ok)
 	fmt.Println(chMap.Has("key"))

@@ -10,33 +10,33 @@ func TestChMap(t *testing.T) {
 	Convey("ChMap", t, func() {
 		chMap := NewChMap()
 		defer chMap.Close()
-		chMap.Set("1", 1)
-		chMap.Set("2", 2)
+		chMap.Put("1", 1)
+		chMap.Put("2", 2)
+		Convey("Count", func() {
+			So(chMap.Count(), ShouldEqual, 2)
+		})
 		Convey("Get", func() {
 			v, ok := chMap.Get("2")
 			So(v, ShouldEqual, 2)
 			So(ok, ShouldEqual, true)
 		})
-		Convey("Set", func() {
-			chMap.Set("2", 3)
-			v, ok := chMap.Get("2")
-			So(v, ShouldEqual, 3)
-			So(ok, ShouldEqual, true)
-		})
-		Convey("Len", func() {
-			So(chMap.Len(), ShouldEqual, 2)
-		})
 		Convey("Has", func() {
 			So(chMap.Has("1"), ShouldEqual, true)
 			So(chMap.Has("no"), ShouldEqual, false)
 		})
-		Convey("Del", func() {
-			chMap.Del("1")
-			So(chMap.Len(), ShouldEqual, 1)
-		})
 		Convey("Keys", func() {
 			keys := chMap.Keys()
 			So(len(keys), ShouldEqual, 2)
+		})
+		Convey("Put", func() {
+			chMap.Put("2", 3)
+			v, ok := chMap.Get("2")
+			So(v, ShouldEqual, 3)
+			So(ok, ShouldEqual, true)
+		})
+		Convey("Remove", func() {
+			chMap.Remove("1")
+			So(chMap.Count(), ShouldEqual, 1)
 		})
 	})
 }
