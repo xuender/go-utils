@@ -47,14 +47,26 @@ func ExampleUniqueUint32() {
 func ExampleNewChMap() {
 	chMap := NewChMap()
 	defer chMap.Close()
-
 	chMap.Put("key", "value")
+	fmt.Println(chMap.Count())
 	v, ok := chMap.Get("key")
 	fmt.Println(v, ok)
 	fmt.Println(chMap.Has("key"))
 	fmt.Println(chMap.Has("no key"))
 	// Output:
+	// 1
 	// value true
 	// true
 	// false
+}
+
+func ExampleChMap_Iterator() {
+	chMap := NewChMap()
+	defer chMap.Close()
+	chMap.Put("key", "value")
+	chMap.Iterator(func(k, v interface{}) {
+		fmt.Printf("k: %s, v: %s\n", k, v)
+	})
+	// Output:
+	// k: key, v: value
 }

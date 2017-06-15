@@ -1,11 +1,7 @@
 package goutils
 
 const (
-	routeGet = iota
-	routeHas
-	routeCount
-	routePut
-	routeKeys
+	routePut = iota
 	routeRemove
 	routeError
 )
@@ -17,119 +13,95 @@ type CallBack struct {
 	Route  int
 }
 
-type ChMap chan CallBack
+type ChMap struct {
+	data       map[interface{}]interface{}
+	chCallBack chan CallBack
+}
 
 func NewChMap() ChMap {
-	chMap := make(ChMap, 3)
-	go func() {
-		data := make(map[interface{}]interface{})
-		for {
-			cb := <-chMap
-			switch cb.Route {
-			case routeCount:
-				cb.Value = len(data)
-				cb.ChBack <- cb
-			case routeGet:
-				if d, ok := data[cb.Key]; ok {
-					cb.Value = d
-				} else {
-					cb.Route = routeError
-				}
-				cb.ChBack <- cb
-			case routeHas:
-				_, ok := data[cb.Key]
-				cb.Value = ok
-				cb.ChBack <- cb
-			case routeKeys:
-				keys := make([]interface{}, len(data))
-				i := 0
-				for k := range data {
-					keys[i] = k
-					i += 1
-				}
-				cb.Value = keys
-				cb.ChBack <- cb
-			case routePut:
-				data[cb.Key] = cb.Value
-			case routeRemove:
-				if _, ok := data[cb.Key]; ok {
-					delete(data, cb.Key)
-				}
-			case routeError:
-				close(chMap)
-				return
-			}
-		}
-	}()
+	chMap := ChMap{
+		data:       make(map[interface{}]interface{}),
+		chCallBack: make(chan CallBack, 3),
+	}
+	go chMap.run()
 	return chMap
 }
 
-func (p ChMap) Count() int {
-	ch := make(chan CallBack, 1)
-	defer close(ch)
-	p <- CallBack{
-		ChBack: ch,
-		Route:  routeCount,
+func (chMap ChMap) run() {
+	for {
+		cb := <-chMap.chCallBack
+		switch cb.Route {
+		case routePut:
+			chMap.data[cb.Key] = cb.Value
+		case routeRemove:
+			if _, ok := chMap.data[cb.Key]; ok {
+				delete(chMap.data, cb.Key)
+			}
+		case routeError:
+			close(chMap.chCallBack)
+			return
+		}
+		cb.ChBack <- cb
 	}
-	cb := <-ch
-	return cb.Value.(int)
-}
-
-func (p ChMap) Get(key interface{}) (interface{}, bool) {
-	ch := make(chan CallBack, 1)
-	defer close(ch)
-	p <- CallBack{
-		Key:    key,
-		ChBack: ch,
-		Route:  routeGet,
-	}
-	cb := <-ch
-	if cb.Route == routeGet {
-		return cb.Value, true
-	}
-	return nil, false
-}
-
-func (p ChMap) Has(key interface{}) bool {
-	ch := make(chan CallBack, 1)
-	defer close(ch)
-	p <- CallBack{
-		Key:    key,
-		ChBack: ch,
-		Route:  routeHas,
-	}
-	cb := <-ch
-	return cb.Value.(bool)
-}
-
-func (p ChMap) Keys() []interface{} {
-	ch := make(chan CallBack, 1)
-	defer close(ch)
-	p <- CallBack{
-		ChBack: ch,
-		Route:  routeKeys,
-	}
-	cb := <-ch
-	return cb.Value.([]interface{})
 }
 
 func (p ChMap) Put(key, value interface{}) {
-	p <- CallBack{
-		Key:   key,
-		Value: value,
-		Route: routePut,
+	ch := make(chan CallBack, 1)
+	defer close(ch)
+	p.chCallBack <- CallBack{
+		Key:    key,
+		Value:  value,
+		Route:  routePut,
+		ChBack: ch,
 	}
+	<-ch
 }
 
 func (p ChMap) Remove(key interface{}) {
-	p <- CallBack{
-		Key:   key,
-		Route: routeRemove,
+	ch := make(chan CallBack, 1)
+	defer close(ch)
+	p.chCallBack <- CallBack{
+		Key:    key,
+		Route:  routeRemove,
+		ChBack: ch,
 	}
+	<-ch
 }
 
 func (p ChMap) Close() {
-	p <- CallBack{
+	p.chCallBack <- CallBack{
 		Route: routeError,
+	}
+}
+
+func (p ChMap) Count() int {
+	return len(p.data)
+}
+
+func (p ChMap) Get(key interface{}) (interface{}, bool) {
+	v, ok := p.data[key]
+	return v, ok
+}
+
+func (p ChMap) Has(key interface{}) bool {
+	_, ok := p.data[key]
+	return ok
+}
+
+func (p ChMap) Keys() []interface{} {
+	keys := make([]interface{}, len(p.data))
+	i := 0
+	for k := range p.data {
+		keys[i] = k
+		i += 1
+	}
+	return keys
+}
+
+func (p ChMap) Iterator(callBack func(k, v interface{})) {
+	for k, v := range p.data {
+		if p.Has(k) {
+			callBack(k, v)
+		}
 	}
 }

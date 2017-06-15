@@ -38,5 +38,11 @@ func TestChMap(t *testing.T) {
 			chMap.Remove("1")
 			So(chMap.Count(), ShouldEqual, 1)
 		})
+		Convey("Iterator", func() {
+			chMap.Iterator(func(k, v interface{}) {
+				g, _ := chMap.Get(k)
+				So(g, ShouldEqual, v)
+			})
+		})
 	})
 }
