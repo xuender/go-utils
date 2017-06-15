@@ -7,14 +7,20 @@ import (
 var chId chan uint32
 
 func UniqueId(prefix string) string {
+	if chId == nil {
+		makeChId()
+	}
 	return fmt.Sprintf("%s%d", prefix, <-chId)
 }
 
 func UniqueUint32() uint32 {
+	if chId == nil {
+		makeChId()
+	}
 	return <-chId
 }
 
-func init() {
+func makeChId() {
 	chId = make(chan uint32)
 	go func() {
 		var id uint32
