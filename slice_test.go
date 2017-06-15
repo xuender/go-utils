@@ -19,6 +19,12 @@ func TestContains(t *testing.T) {
 				return i == "dd"
 			}), ShouldEqual, false)
 		})
+		Convey("Contains aa", func() {
+			So(Contains(&x, "aa"), ShouldEqual, true)
+		})
+		Convey("Contains kk", func() {
+			So(Contains(&[]string{}, "kk"), ShouldEqual, false)
+		})
 	})
 }
 func TestRemove(t *testing.T) {
@@ -44,6 +50,12 @@ func TestRemove(t *testing.T) {
 				return i > 100
 			})
 			So(len(s), ShouldEqual, 4)
+		})
+		Convey("remove 4", func() {
+			So(Remove(&s, 4), ShouldEqual, 1)
+		})
+		Convey("remove 0", func() {
+			So(Remove(&[]int{}, 8), ShouldEqual, 0)
 		})
 	})
 }

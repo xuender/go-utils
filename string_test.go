@@ -28,5 +28,10 @@ func TestSplitAfter(t *testing.T) {
 			So(ret[0], ShouldEqual, "12")
 			So(ret[1], ShouldEqual, "345")
 		})
+		Convey("123", func() {
+			ret := SplitAfter("123")
+			So(len(ret), ShouldEqual, 1)
+			So(ret[0], ShouldEqual, "123")
+		})
 	})
 }
