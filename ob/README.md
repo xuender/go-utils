@@ -1,5 +1,0 @@
-## Observer
-
-* Ob
-* Maker
-* Suck
