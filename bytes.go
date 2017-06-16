@@ -6,17 +6,17 @@ import (
 	"encoding/gob"
 )
 
-func Decode(bs []byte, obj interface{}) {
+func Decode(bs []byte, obj interface{}) error {
 	buff := bytes.NewBuffer(bs)
 	dec := gob.NewDecoder(buff)
-	dec.Decode(obj)
+	return dec.Decode(obj)
 }
 
-func Encode(obj interface{}) []byte {
+func Encode(obj interface{}) ([]byte, error) {
 	var bs bytes.Buffer
 	enc := gob.NewEncoder(&bs)
-	enc.Encode(obj)
-	return bs.Bytes()
+	err := enc.Encode(obj)
+	return bs.Bytes(), err
 }
 
 func PrefixBytes(prefix string, bs []byte) []byte {

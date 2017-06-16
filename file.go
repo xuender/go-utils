@@ -6,21 +6,27 @@ import (
 	"os"
 )
 
-func ReadLines(file string, read func(string)) error {
+func ReadLines(file string, read func(string)) (err error) {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() {
+		e := f.Close()
+		if err == nil {
+			err = e
+		}
+	}()
 	bfRd := bufio.NewReader(f)
 	for {
-		line, err := bfRd.ReadString('\n')
+		var line string
+		line, err = bfRd.ReadString('\n')
 		read(line)
 		if err != nil {
 			if err == io.EOF {
-				return nil
+				err = nil
 			}
-			return err
+			return
 		}
 	}
 }

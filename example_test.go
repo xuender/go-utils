@@ -3,9 +3,11 @@ package goutils
 import "fmt"
 
 func ExampleReadLines() {
-	ReadLines("LICENSE", func(line string) {
+	if err := ReadLines("LICENSE", func(line string) {
 		fmt.Print(line)
-	})
+	}); err != nil {
+		fmt.Println(err)
+	}
 }
 
 func ExampleSplitAfter() {
