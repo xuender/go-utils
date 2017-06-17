@@ -125,10 +125,11 @@ func (a Set) Numbers() []uint32 {
 	return ret
 }
 
-func (a Set) Remove(nums ...uint32) {
+func (a Set) Remove(nums ...uint32) *Set {
 	for _, i := range nums {
 		delete(a, i)
 	}
+	return &a
 }
 
 func (a Set) Retain(nums ...uint32) {

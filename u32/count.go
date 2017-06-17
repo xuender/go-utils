@@ -21,12 +21,16 @@ func (m SetCount) Add(sets ...*Set) {
 	}
 }
 
-func (m SetCount) Count() []Count {
+func (m SetCount) Count(removeSets ...*Set) []Count {
 	ret := make([]Count, len(m))
 	i := 0
+	set := NewSet()
+	set.Union(removeSets...)
 	for _, v := range m {
-		ret[i] = *v
-		i++
+		if !set.Has(v.Num) {
+			ret[i] = *v
+			i++
+		}
 	}
 	sort.Slice(ret, func(i, j int) bool {
 		if ret[i].Sum == ret[j].Sum {
