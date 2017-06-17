@@ -3,9 +3,9 @@ package u32
 import "fmt"
 
 func ExampleIsIntersect() {
-	fmt.Println(IsIntersect(&[]uint32{}, &[]uint32{3, 4, 5}))
-	fmt.Println(IsIntersect(&[]uint32{1, 2, 3}, &[]uint32{3, 4, 5}))
-	fmt.Println(IsIntersect(&[]uint32{1, 2, 6}, &[]uint32{3, 4, 5}))
+	fmt.Println(IsIntersect([]uint32{}, []uint32{3, 4, 5}))
+	fmt.Println(IsIntersect([]uint32{1, 2, 3}, []uint32{3, 4, 5}))
+	fmt.Println(IsIntersect([]uint32{1, 2, 6}, []uint32{3, 4, 5}))
 	// Output:
 	// false
 	// true
@@ -13,9 +13,9 @@ func ExampleIsIntersect() {
 }
 
 func ExampleJaccard() {
-	fmt.Println(Jaccard(&[]uint32{1, 2, 3}, &[]uint32{1, 2, 4}))
-	fmt.Println(Jaccard(&[]uint32{1, 2, 3}, &[]uint32{1, 4, 5}))
-	fmt.Println(Jaccard(&[]uint32{1, 2, 3}, &[]uint32{1, 4, 5, 6, 7, 8}))
+	fmt.Println(Jaccard([]uint32{1, 2, 3}, []uint32{1, 2, 4}))
+	fmt.Println(Jaccard([]uint32{1, 2, 3}, []uint32{1, 4, 5}))
+	fmt.Println(Jaccard([]uint32{1, 2, 3}, []uint32{1, 4, 5, 6, 7, 8}))
 	// Output:
 	// 500
 	// 200
