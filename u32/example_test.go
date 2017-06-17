@@ -2,6 +2,26 @@ package u32
 
 import "fmt"
 
+func ExampleIsIntersect() {
+	fmt.Println(IsIntersect(&[]uint32{}, &[]uint32{3, 4, 5}))
+	fmt.Println(IsIntersect(&[]uint32{1, 2, 3}, &[]uint32{3, 4, 5}))
+	fmt.Println(IsIntersect(&[]uint32{1, 2, 6}, &[]uint32{3, 4, 5}))
+	// Output:
+	// false
+	// true
+	// false
+}
+
+func ExampleJaccard() {
+	fmt.Println(Jaccard(&[]uint32{1, 2, 3}, &[]uint32{1, 2, 4}))
+	fmt.Println(Jaccard(&[]uint32{1, 2, 3}, &[]uint32{1, 4, 5}))
+	fmt.Println(Jaccard(&[]uint32{1, 2, 3}, &[]uint32{1, 4, 5, 6, 7, 8}))
+	// Output:
+	// 500
+	// 200
+	// 125
+}
+
 func ExampleNewSet() {
 	set := NewSet(1, 2, 3, 3, 2, 1)
 	fmt.Println(set.Numbers())
