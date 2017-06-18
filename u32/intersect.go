@@ -1,5 +1,7 @@
 package u32
 
+import "reflect"
+
 // A and B is sorted
 func IsIntersect(a, b []uint32) bool {
 	aLen := len(a)
@@ -10,6 +12,9 @@ func IsIntersect(a, b []uint32) bool {
 	aLast := a[aLen-1]
 	bLast := b[bLen-1]
 	if a[0] > bLast || b[0] > aLast {
+		return false
+	}
+	if aLen == bLen && reflect.DeepEqual(a, b) {
 		return false
 	}
 	for _, i := range a {

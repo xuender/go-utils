@@ -23,6 +23,7 @@ func TestIsIntersect(t *testing.T) {
 		Convey("false", func() {
 			So(IsIntersect([]uint32{1, 20}, []uint32{2, 3}), ShouldEqual, false)
 			So(IsIntersect([]uint32{3, 4, 8}, []uint32{1, 50, 60}), ShouldEqual, false)
+			So(IsIntersect([]uint32{1, 2}, []uint32{1, 2}), ShouldEqual, false)
 		})
 	})
 }
