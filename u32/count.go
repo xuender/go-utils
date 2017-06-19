@@ -2,18 +2,21 @@ package u32
 
 import "sort"
 
+// Count is count Uint32.
 type Count struct {
 	Num uint32
 	Sum uint8
 }
 
+// SetCount set count.
 type SetCount map[uint32]*Count
 
+// Add is SetCount add Sets.
 func (m SetCount) Add(sets ...*Set) {
 	for _, set := range sets {
 		for k := range *set {
 			if mv, ok := m[k]; ok {
-				mv.Sum += 1
+				mv.Sum++
 			} else {
 				m[k] = &Count{Num: k, Sum: 1}
 			}
@@ -21,6 +24,7 @@ func (m SetCount) Add(sets ...*Set) {
 	}
 }
 
+// Count is SetCount count.
 func (m SetCount) Count(removeSets ...*Set) []Count {
 	ret := make([]Count, 0)
 	set := NewSet()

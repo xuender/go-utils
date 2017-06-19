@@ -4,27 +4,29 @@ import (
 	"fmt"
 )
 
-var chId chan uint32
+var chUint32 chan uint32
 
-func UniqueId(prefix string) string {
-	makeChId()
-	return fmt.Sprintf("%s%d", prefix, <-chId)
+// UniqueString get unique string.
+func UniqueString(prefix string) string {
+	makeChUint32()
+	return fmt.Sprintf("%s%d", prefix, <-chUint32)
 }
 
+// UniqueUint32 get unique uint32.
 func UniqueUint32() uint32 {
-	makeChId()
-	return <-chId
+	makeChUint32()
+	return <-chUint32
 }
 
-func makeChId() {
-	if chId == nil {
-		chId = make(chan uint32)
+func makeChUint32() {
+	if chUint32 == nil {
+		chUint32 = make(chan uint32)
 		go func() {
-			var id uint32
-			id = 0
+			var num uint32
+			num = 0
 			for {
-				id += 1
-				chId <- id
+				num++
+				chUint32 <- num
 			}
 		}()
 	}

@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// ReadLines read file.
 func ReadLines(file string, read func(string)) (err error) {
 	f, err := os.Open(file)
 	if err != nil {

@@ -1,6 +1,6 @@
 package u32
 
-// Jaccard(A, B) = |A intersect B| / |A union B| * 1000
+// Jaccard (A, B) = |A intersect B| / |A union B| * 1000
 func Jaccard(a, b []uint32) int {
 	aLen := len(a)
 	bLen := len(b)
@@ -12,19 +12,19 @@ func Jaccard(a, b []uint32) int {
 	for _, i := range a {
 		if _, ok := tmpMap[i]; !ok {
 			tmpMap[i] = true
-			aOrB += 1
+			aOrB++
 		}
 	}
 	for _, i := range b {
 		v, ok := tmpMap[i]
 		if ok {
 			if v {
-				aAndB += 1
+				aAndB++
 			} else {
 				continue
 			}
 		} else {
-			aOrB += 1
+			aOrB++
 		}
 		tmpMap[i] = false
 	}

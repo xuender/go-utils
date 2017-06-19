@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-// Plus of strings.SplitAfter.
+// SplitAfter is plus of strings.SplitAfter.
 func SplitAfter(s string, sep ...string) []string {
 	c := 0
 	for _, sp := range sep {

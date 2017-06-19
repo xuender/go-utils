@@ -4,7 +4,7 @@ import (
 	"reflect"
 )
 
-// Element contains by lambda or element.
+// Contains is element contains by lambda or element
 func Contains(slice, lambdaOrElement interface{}) bool {
 	sv := reflect.ValueOf(slice).Elem()
 	if sv.Len() == 0 {
@@ -47,7 +47,7 @@ func Remove(slice, lambdaOrElement interface{}) int {
 			after := sv.Slice(i+1, sv.Len())
 			reflect.Copy(sv, reflect.AppendSlice(before, after))
 			sv.SetLen(sv.Len() - 1)
-			ret += 1
+			ret++
 			i = -1
 		}
 	}

@@ -2,7 +2,7 @@ package u32
 
 import "reflect"
 
-// A and B is sorted
+// IsIntersect A and B is sorted
 func IsIntersect(a, b []uint32) bool {
 	aLen := len(a)
 	bLen := len(b)

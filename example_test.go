@@ -29,9 +29,9 @@ func ExamplePrefixUint32() {
 }
 
 func ExampleUniqueId() {
-	fmt.Println(UniqueId("U-"))
-	fmt.Println(UniqueId("K-"))
-	fmt.Println(UniqueId("K-"))
+	fmt.Println(UniqueString("U-"))
+	fmt.Println(UniqueString("K-"))
+	fmt.Println(UniqueString("K-"))
 	// Output:
 	// U-1
 	// K-2
