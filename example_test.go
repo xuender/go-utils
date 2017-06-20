@@ -28,7 +28,7 @@ func ExamplePrefixUint32() {
 	// [105 100 45 3 0 0 0]
 }
 
-func ExampleUniqueId() {
+func ExampleUniqueString() {
 	fmt.Println(UniqueString("U-"))
 	fmt.Println(UniqueString("K-"))
 	fmt.Println(UniqueString("K-"))

@@ -6,13 +6,13 @@ import (
 
 var chUint32 chan uint32
 
-// UniqueString get unique string.
+// UniqueString 程序运行期间生成不重复的字符串.
 func UniqueString(prefix string) string {
 	makeChUint32()
 	return fmt.Sprintf("%s%d", prefix, <-chUint32)
 }
 
-// UniqueUint32 get unique uint32.
+// UniqueUint32 程序运行期间生成不重复的uint32.
 func UniqueUint32() uint32 {
 	makeChUint32()
 	return <-chUint32
