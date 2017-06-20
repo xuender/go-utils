@@ -150,7 +150,19 @@ func (a Set) Remove(nums ...uint32) *Set {
 
 // Retain 交集.
 func (a Set) Retain(nums ...uint32) {
-	a.Intersect(NewSet(nums...))
+	for k := range a {
+		a[k] = false
+	}
+	for _, num := range nums {
+		if _, ok := a[num]; ok {
+			a[num] = true
+		}
+	}
+	for k, v := range a {
+		if !v {
+			delete(a, k)
+		}
+	}
 }
 
 // Union 并集.
