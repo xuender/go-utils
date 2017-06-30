@@ -116,3 +116,19 @@ func ExampleSet_Len() {
 	// Output:
 	// 3
 }
+
+func ExampleStrToUint32() {
+	fmt.Println(StrToUint32("4dItAQ"))
+	fmt.Println(StrToUint32("end"))
+	// Output:
+	// 19780321
+	// 30586
+}
+
+func ExampleUint32ToStr() {
+	fmt.Println(Uint32ToStr(19780321))
+	fmt.Println(Uint32ToStr(30586))
+	// Output:
+	// 4dItAQ
+	// enc
+}
