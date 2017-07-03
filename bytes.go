@@ -34,3 +34,13 @@ func PrefixUint32(prefix string, num uint32) []byte {
 	binary.LittleEndian.PutUint32(bs, num)
 	return PrefixBytes(prefix, bs)
 }
+
+// Join bytes.
+func Join(sep []byte, bs ...[]byte) []byte {
+	return bytes.Join(bs, sep)
+}
+
+// Concat bytes.
+func Concat(bs ...[]byte) []byte {
+	return bytes.Join(bs, nil)
+}

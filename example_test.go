@@ -72,3 +72,19 @@ func ExampleChMap_Iterator() {
 	// Output:
 	// k: key, v: value
 }
+
+func ExampleJoin() {
+	a := []byte("aa")
+	b := []byte("bb")
+	fmt.Println(Join([]byte(","), a, b))
+	// Output:
+	// [97 97 44 98 98]
+}
+
+func ExampleConcat() {
+	a := []byte("aa")
+	b := []byte("bb")
+	fmt.Println(Concat(a, b))
+	// Output:
+	// [97 97 98 98]
+}
