@@ -17,13 +17,13 @@ func ExampleSplitAfter() {
 }
 
 func ExamplePrefixBytes() {
-	fmt.Println(PrefixBytes("id-", []byte("abc")))
+	fmt.Println(PrefixBytes([]byte("id-"), []byte("abc")))
 	// Output:
 	// [105 100 45 97 98 99]
 }
 
 func ExamplePrefixUint32() {
-	fmt.Println(PrefixUint32("id-", 3))
+	fmt.Println(PrefixUint32([]byte("id-"), 3))
 	// Output:
 	// [105 100 45 3 0 0 0]
 }

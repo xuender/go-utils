@@ -22,14 +22,12 @@ func Encode(obj interface{}) ([]byte, error) {
 }
 
 // PrefixBytes is prefix add bytes to bytes.
-func PrefixBytes(prefix string, bs []byte) []byte {
-	buf := bytes.NewBuffer([]byte(prefix))
-	buf.Write(bs)
-	return buf.Bytes()
+func PrefixBytes(prefix []byte, bs []byte) []byte {
+	return Concat(prefix, bs)
 }
 
 // PrefixUint32 is prefix add uint32 to bytes.
-func PrefixUint32(prefix string, num uint32) []byte {
+func PrefixUint32(prefix []byte, num uint32) []byte {
 	bs := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bs, num)
 	return PrefixBytes(prefix, bs)
