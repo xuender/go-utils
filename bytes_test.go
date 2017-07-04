@@ -12,6 +12,12 @@ func TestDecode(t *testing.T) {
 		err := Decode([]byte{5, 12, 0, 2, 'a', 'b'}, &str)
 		So(err, ShouldEqual, nil)
 		So(str, ShouldEqual, "ab")
+		Convey("Error", func() {
+			var nstr string
+			err := Decode(nil, &nstr)
+			So(err.Error(), ShouldEqual, "EOF")
+			So(nstr, ShouldEqual, "")
+		})
 	})
 }
 
