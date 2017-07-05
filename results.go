@@ -40,6 +40,16 @@ func (r *Results) Get(i int) (interface{}, interface{}) {
 	return r.datas[i].data, r.datas[i].point
 }
 
+// GetData 数据.
+func (r *Results) GetData(i int) interface{} {
+	return r.datas[i].data
+}
+
+// GetPoint 得分.
+func (r *Results) GetPoint(i int) interface{} {
+	return r.datas[i].point
+}
+
 // NewResults 新建结果集.
 func NewResults(size int, less func(i, j interface{}) bool) *Results {
 	return &Results{

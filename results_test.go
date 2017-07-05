@@ -35,9 +35,8 @@ func TestResults(t *testing.T) {
 			rs2.Add(7, 99)
 			rs2.Add(9, 9)
 			rs.AddResults(rs2)
-			a, b := rs.Get(0)
-			So(a, ShouldEqual, 7)
-			So(b, ShouldEqual, 99)
+			So(rs.GetData(0), ShouldEqual, 7)
+			So(rs.GetPoint(0), ShouldEqual, 99)
 		})
 	})
 }
