@@ -1,6 +1,9 @@
 package goutils
 
-import "sort"
+import (
+	"sort"
+	"sync"
+)
 
 type result struct {
 	data  interface{}
@@ -13,10 +16,13 @@ type Results struct {
 	datas []result
 	size  int
 	less  func(i, j interface{}) bool
+	mutex sync.Mutex
 }
 
 // Add 增加结果.
 func (r *Results) Add(data, point interface{}) {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
 	r.datas[r.Len] = result{
 		data:  data,
 		point: point,
