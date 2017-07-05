@@ -56,6 +56,11 @@ func (r *Results) GetPoint(i int) interface{} {
 	return r.datas[i].point
 }
 
+// GetSize 尺寸.
+func (r *Results) GetSize() int {
+	return r.size
+}
+
 // NewResults 新建结果集.
 func NewResults(size int, less func(i, j interface{}) bool) *Results {
 	return &Results{
