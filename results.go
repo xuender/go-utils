@@ -1,36 +1,28 @@
 package goutils
 
-import (
-	"log"
-	"sort"
-)
+import "sort"
 
-// Lesser 排序使用.
-type Lesser interface {
-	Less(b interface{}) bool
+type result struct {
+	data  interface{}
+	point interface{}
 }
 
 // Results 最优结果集.
 type Results struct {
-	Len    int
-	lesses []Lesser
-	size   int
+	Len   int
+	datas []result
+	size  int
+	less  func(i, j interface{}) bool
 }
 
 // Add 增加结果.
-func (r *Results) Add(data Lesser) {
-	r.lesses[r.Len] = data
-	log.Println(r)
-	sort.Slice(r.lesses, func(i, j int) bool {
-		if r.lesses[i] == nil {
-			return false
-		}
-		if r.lesses[j] == nil {
-			return false
-		}
-		return r.lesses[i].Less(r.lesses[j])
-	})
+func (r *Results) Add(data, point interface{}) {
+	r.datas[r.Len] = result{
+		data:  data,
+		point: point,
+	}
 	r.Len++
+	sort.Slice(r.datas[:r.Len], func(i, j int) bool { return r.less(r.datas[i].point, r.datas[j].point) })
 	if r.Len > r.size {
 		r.Len = r.size
 	}
@@ -44,15 +36,16 @@ func (r *Results) AddResults(results *Results) {
 }
 
 // Get 获取数据.
-func (r *Results) Get(i int) Lesser {
-	return r.lesses[i]
+func (r *Results) Get(i int) (interface{}, interface{}) {
+	return r.datas[i].data, r.datas[i].point
 }
 
 // NewResults 新建结果集.
-func NewResults(size int) *Results {
+func NewResults(size int, less func(i, j interface{}) bool) *Results {
 	return &Results{
-		Len:    0,
-		lesses: make([]Lesser, size+1),
-		size:   size,
+		Len:   0,
+		datas: make([]result, size+1),
+		size:  size,
+		less:  less,
 	}
 }
