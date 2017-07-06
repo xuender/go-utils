@@ -10,6 +10,8 @@ func TestResults(t *testing.T) {
 	Convey("Results", t, func() {
 		rs := NewResults(3, func(i, j interface{}) bool {
 			return i.(int) > j.(int)
+		}, func(i, j interface{}) bool {
+			return i.(int) == j.(int)
 		})
 		So(rs.Len, ShouldEqual, 0)
 		rs.Add(1, 5)
@@ -31,6 +33,8 @@ func TestResults(t *testing.T) {
 		Convey("AddResults", func() {
 			rs2 := NewResults(3, func(i, j interface{}) bool {
 				return i.(int) > j.(int)
+			}, func(i, j interface{}) bool {
+				return i.(int) == j.(int)
 			})
 			rs2.Add(7, 99)
 			rs2.Add(9, 9)

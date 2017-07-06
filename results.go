@@ -5,6 +5,7 @@ import (
 	"sync"
 )
 
+// Result 结果.
 type Result struct {
 	Data  interface{}
 	Point interface{}
@@ -12,10 +13,12 @@ type Result struct {
 
 // Results 最优结果集.
 type Results struct {
-	Len   int
-	Data  []Result
-	Size  int
+	Data []Result
+	Len  int
+	Size int
+
 	less  func(i, j interface{}) bool
+	equal func(i, j interface{}) bool
 	mutex sync.Mutex
 }
 
@@ -23,6 +26,12 @@ type Results struct {
 func (r *Results) Add(data, point interface{}) {
 	r.mutex.Lock()
 	defer r.mutex.Unlock()
+	for i := 0; i < r.Len; i++ {
+		if r.equal(data, r.Data[i].Data) {
+			r.Data[i].Point = point
+			return
+		}
+	}
 	r.Data[r.Len] = Result{
 		Data:  data,
 		Point: point,
@@ -56,17 +65,13 @@ func (r *Results) GetPoint(i int) interface{} {
 	return r.Data[i].Point
 }
 
-// GetSize 尺寸.
-func (r *Results) GetSize() int {
-	return r.Size
-}
-
 // NewResults 新建结果集.
-func NewResults(size int, less func(i, j interface{}) bool) *Results {
+func NewResults(size int, less, equal func(i, j interface{}) bool) *Results {
 	return &Results{
 		Len:   0,
-		Data: make([]Result, size+1),
+		Data:  make([]Result, size+1),
 		Size:  size,
 		less:  less,
+		equal: equal,
 	}
 }
