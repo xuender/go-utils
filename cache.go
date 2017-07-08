@@ -127,7 +127,11 @@ func NewCache(expire time.Duration) *Cache {
 		chCallBack: make(chan callBack, 3),
 	}
 	go cache.run()
-	ticker := time.NewTicker(expire)
+	t := time.Minute
+	if expire < t {
+		t = expire
+	}
+	ticker := time.NewTicker(t)
 	go func() {
 		for _ = range ticker.C {
 			now := time.Now()
