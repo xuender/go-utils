@@ -21,10 +21,6 @@ func TestCache(t *testing.T) {
 			So(v, ShouldEqual, 2)
 			So(ok, ShouldEqual, true)
 		})
-		Convey("Has", func() {
-			So(cache.Has(1), ShouldEqual, true)
-			So(cache.Has("no"), ShouldEqual, false)
-		})
 		/*
 			Convey("Keys", func() {
 				keys := chMap.Keys()

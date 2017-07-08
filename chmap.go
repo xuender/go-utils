@@ -1,18 +1,5 @@
 package goutils
 
-const (
-	routePut = iota
-	routeRemove
-	routeError
-)
-
-type callBack struct {
-	Key    interface{}
-	Value  interface{}
-	ChBack chan callBack
-	Route  int
-}
-
 // ChMap is channel map.
 type ChMap struct {
 	data       map[interface{}]interface{}
@@ -26,7 +13,7 @@ func (p ChMap) Put(key, value interface{}) {
 	p.chCallBack <- callBack{
 		Key:    key,
 		Value:  value,
-		Route:  routePut,
+		Route:  _Put,
 		ChBack: ch,
 	}
 	<-ch
@@ -38,7 +25,7 @@ func (p ChMap) Remove(key interface{}) {
 	defer close(ch)
 	p.chCallBack <- callBack{
 		Key:    key,
-		Route:  routeRemove,
+		Route:  _Remove,
 		ChBack: ch,
 	}
 	<-ch
@@ -47,7 +34,7 @@ func (p ChMap) Remove(key interface{}) {
 // Close this ChMap.
 func (p ChMap) Close() {
 	p.chCallBack <- callBack{
-		Route: routeError,
+		Route: _Close,
 	}
 }
 
@@ -92,13 +79,13 @@ func (p ChMap) run() {
 	for {
 		cb := <-p.chCallBack
 		switch cb.Route {
-		case routePut:
+		case _Put:
 			p.data[cb.Key] = cb.Value
-		case routeRemove:
+		case _Remove:
 			if _, ok := p.data[cb.Key]; ok {
 				delete(p.data, cb.Key)
 			}
-		case routeError:
+		case _Close:
 			close(p.chCallBack)
 			return
 		}

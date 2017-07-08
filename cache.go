@@ -5,11 +5,17 @@ import "time"
 const (
 	_Put = iota
 	_Get
-	_Has
 	_Remove
 	_Close
 	_Error
 )
+
+type callBack struct {
+	Key    interface{}
+	Value  interface{}
+	ChBack chan callBack
+	Route  int
+}
 
 // Closer have Close function.
 type Closer interface {
@@ -52,19 +58,6 @@ func (c *Cache) Get(key interface{}) (interface{}, bool) {
 	return ret.Value, true
 }
 
-// Has key.
-func (c *Cache) Has(key interface{}) bool {
-	ch := make(chan callBack, 1)
-	defer close(ch)
-	c.chCallBack <- callBack{
-		Key:    key,
-		Route:  _Has,
-		ChBack: ch,
-	}
-	ret := <-ch
-	return ret.Route != _Error
-}
-
 // Remove key.
 func (c *Cache) Remove(key interface{}) {
 	ch := make(chan callBack, 1)
@@ -99,12 +92,6 @@ func (c *Cache) run() {
 		case _Get:
 			if value, ok := c.data[cb.Key]; ok {
 				cb.Value = value
-				c.access[cb.Key] = time.Now()
-			} else {
-				cb.Route = _Error
-			}
-		case _Has:
-			if _, ok := c.data[cb.Key]; ok {
 				c.access[cb.Key] = time.Now()
 			} else {
 				cb.Route = _Error
