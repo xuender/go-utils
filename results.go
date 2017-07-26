@@ -29,6 +29,7 @@ func (r *Results) Add(data, point interface{}) {
 	for i := 0; i < r.Len; i++ {
 		if r.equal(data, r.Data[i].Data) {
 			r.Data[i].Point = point
+			sort.Slice(r.Data[:r.Len], func(f, j int) bool { return r.less(r.Data[f].Point, r.Data[j].Point) })
 			return
 		}
 	}

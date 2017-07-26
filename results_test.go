@@ -30,6 +30,9 @@ func TestResults(t *testing.T) {
 		a, b = rs.Get(2)
 		So(a, ShouldEqual, 3)
 		So(b, ShouldEqual, 6)
+		rs.Add(4, 14)
+		t, _ := rs.Get(0)
+		So(t.(int), ShouldEqual, 2)
 		Convey("AddResults", func() {
 			rs2 := NewResults(3, func(i, j interface{}) bool {
 				return i.(int) > j.(int)
