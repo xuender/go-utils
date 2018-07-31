@@ -31,3 +31,25 @@ func ReadLines(file string, read func(string)) (err error) {
 		}
 	}
 }
+
+// ReadBuf read file from buf.
+func ReadBuf(path string, read func([]byte)) error {
+	f, err := os.Open(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	buf := make([]byte, 102400)
+	bfRd := bufio.NewReader(f)
+	for {
+		n, err := bfRd.Read(buf)
+		read(buf[:n])
+		if err != nil {
+			if err == io.EOF {
+				return nil
+			}
+			return err
+		}
+	}
+}

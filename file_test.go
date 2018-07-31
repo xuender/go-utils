@@ -9,6 +9,9 @@ import (
 func read(line string) {
 
 }
+func readBuf(bs []byte) {
+
+}
 
 func TestReadLines(t *testing.T) {
 	Convey("Read Lines", t, func() {
@@ -17,6 +20,17 @@ func TestReadLines(t *testing.T) {
 		})
 		Convey("read file", func() {
 			So(ReadLines("LICENSE", read), ShouldBeNil)
+		})
+	})
+}
+
+func TestReadBuf(t *testing.T) {
+	Convey("Read Buf", t, func() {
+		Convey("error file", func() {
+			So(ReadBuf("/aaaaa", readBuf), ShouldNotBeNil)
+		})
+		Convey("read file", func() {
+			So(ReadBuf("LICENSE", readBuf), ShouldBeNil)
 		})
 	})
 }
