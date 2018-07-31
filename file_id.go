@@ -14,16 +14,14 @@ type FileId struct {
 	size int64
 }
 
-func NewFileId() *FileId {
-	f := new(FileId)
-	f.hash = fnv.New128()
-	f.size = 0
-	return f
-}
-
-func NewFileIdByFile(path string) (*FileId, error){
-	id:=NewFileId()
-	err := ReadBuf(path, func(bs []byte) { id.Write(bs) })
+func NewFileId(file string) (*FileId, error) {
+	id := new(FileId)
+	id.hash = fnv.New128()
+	id.size = 0
+	if file == "" {
+		return id, nil
+	}
+	err := ReadBuf(file, func(bs []byte) { id.Write(bs) })
 	return id, err
 }
 

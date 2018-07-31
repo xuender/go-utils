@@ -1,26 +1,23 @@
 package goutils
 
 import (
-	"testing"
-
 	. "github.com/smartystreets/goconvey/convey"
+	"testing"
 )
 
 func TestNewFileId(t *testing.T) {
-	Convey("NewFileId", t, func() {
-		Convey("String", func() {
-			id := NewFileId()
+	Convey("FileId", t, func() {
+		Convey("Write", func() {
+			id, _ := NewFileId("")
 			id.Write([]byte("xxx"))
 			So(id.String(), ShouldEqual, "pouybESLWCKDbbx4xozlvwM=")
 		})
-	})
-	Convey("NewFileIdByFile", t, func() {
 		Convey("error", func() {
-			_, err := NewFileIdByFile("/dfdfdfd")
+			_, err := NewFileId("/dfdfdfd")
 			So(err, ShouldNotBeNil)
 		})
 		Convey("String", func() {
-			id, err := NewFileIdByFile("LICENSE")
+			id, err := NewFileId("LICENSE")
 			So(err, ShouldBeNil)
 			So(id.String(), ShouldEqual, "SEofGUXjne39NwsrA8NO8TEE")
 		})
