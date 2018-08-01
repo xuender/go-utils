@@ -2,8 +2,8 @@ package goutils
 
 import (
 	"bytes"
-	"encoding/base64"
 	"encoding/binary"
+	"encoding/hex"
 	"hash"
 	"hash/fnv"
 )
@@ -39,7 +39,7 @@ func (f *FileId) Id() []byte {
 	}, []byte(""))
 }
 func (f *FileId) String() string {
-	return base64.StdEncoding.EncodeToString(f.Id())
+	return hex.EncodeToString(f.Id())
 }
 func removeVacant(bytes []byte) []byte {
 	l := len(bytes)
