@@ -36,7 +36,7 @@ func (f *FileId) Id() []byte {
 	return bytes.Join([][]byte{
 		f.hash.Sum(nil),
 		removeVacant(bs),
-	}, []byte(""))
+	}, nil)
 }
 func (f *FileId) String() string {
 	return hex.EncodeToString(f.Id())
