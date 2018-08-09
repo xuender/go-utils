@@ -15,10 +15,14 @@ type Web struct {
 }
 
 func Classic() *Web {
+	m := mux.NewRouter()
+	r := render.New()
+	n := negroni.Classic()
+	n.UseHandler(m)
 	return &Web{
-		Router:  mux.NewRouter(),
-		Render:  render.New(),
-		Negroni: negroni.Classic(),
+		Router:  m,
+		Render:  r,
+		Negroni: n,
 	}
 }
 func (w *Web) Handle(path string, f func(c *Context)) *mux.Route {
