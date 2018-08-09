@@ -17,6 +17,9 @@ type Context struct {
 func (c *Context) Text(status int, v string) error {
 	return c.Render.Text(c.Writer, status, v)
 }
+func (c *Context) String(status int, v string) error {
+	return c.Render.Text(c.Writer, status, v)
+}
 func (c *Context) HTML(status int, name string, binding interface{}, htmlOpt ...render.HTMLOptions) error {
 	return c.Render.HTML(c.Writer, status, name, binding, htmlOpt...)
 }
