@@ -60,12 +60,12 @@ func (w *Web) Handle(path string, f func(c *Context)) *mux.Route {
 		})
 	})
 }
-func (w *Web) Get(path string, f func(c *Context)) *mux.Route {
+func (w *Web) GET(path string, f func(c *Context)) *mux.Route {
 	return w.Handle(path, f).Methods("GET")
 }
-func (w *Web) Post(path string, f func(c *Context)) *mux.Route {
+func (w *Web) POST(path string, f func(c *Context)) *mux.Route {
 	return w.Handle(path, f).Methods("POST")
 }
-func (w *Web) Put(path string, f func(c *Context)) *mux.Route {
+func (w *Web) PUT(path string, f func(c *Context)) *mux.Route {
 	return w.Handle(path, f).Methods("PUT")
 }
