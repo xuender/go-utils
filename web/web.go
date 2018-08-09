@@ -14,6 +14,7 @@ type Web struct {
 	Router  *mux.Router      // 路由
 	Render  *render.Render   // 输出
 	Negroni *negroni.Negroni // 服务
+	Name    string           // 名称
 }
 
 func Classic(name string) *Web {
@@ -22,6 +23,7 @@ func Classic(name string) *Web {
 	n := negroni.New(newRecovery(name), newLogger(name), negroni.NewStatic(http.Dir("www")))
 	n.UseHandler(m)
 	return &Web{
+		Name:    name,
 		Router:  m,
 		Render:  r,
 		Negroni: n,
@@ -41,6 +43,13 @@ func newLogger(name string) *negroni.Logger {
 	logger.SetDateFormat(negroni.LoggerDefaultDateFormat)
 	logger.SetFormat(negroni.LoggerDefaultFormat)
 	return logger
+}
+
+// ListenAndServe run
+func (w *Web) Run(addr string) {
+	l := log.New(os.Stdout, "["+w.Name+"] ", 0)
+	l.Printf("listening on %s", addr)
+	l.Fatal(http.ListenAndServe(addr, w.Negroni))
 }
 func (w *Web) Handle(path string, f func(c *Context)) *mux.Route {
 	return w.Router.HandleFunc(path, func(writer http.ResponseWriter, req *http.Request) {
