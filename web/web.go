@@ -1,7 +1,9 @@
 package web
 
 import (
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
@@ -14,16 +16,31 @@ type Web struct {
 	Negroni *negroni.Negroni // 服务
 }
 
-func Classic() *Web {
+func Classic(name string) *Web {
 	m := mux.NewRouter()
 	r := render.New()
-	n := negroni.Classic()
+	n := negroni.New(newRecovery(name), newLogger(name), negroni.NewStatic(http.Dir("www")))
 	n.UseHandler(m)
 	return &Web{
 		Router:  m,
 		Render:  r,
 		Negroni: n,
 	}
+}
+func newRecovery(name string) *negroni.Recovery {
+	return &negroni.Recovery{
+		Logger:     log.New(os.Stdout, "["+name+"] ", 0),
+		PrintStack: true,
+		StackAll:   false,
+		StackSize:  1024 * 8,
+		Formatter:  &negroni.TextPanicFormatter{},
+	}
+}
+func newLogger(name string) *negroni.Logger {
+	logger := &negroni.Logger{ALogger: log.New(os.Stdout, "["+name+"] ", 0)}
+	logger.SetDateFormat(negroni.LoggerDefaultDateFormat)
+	logger.SetFormat(negroni.LoggerDefaultFormat)
+	return logger
 }
 func (w *Web) Handle(path string, f func(c *Context)) *mux.Route {
 	return w.Router.HandleFunc(path, func(writer http.ResponseWriter, req *http.Request) {
