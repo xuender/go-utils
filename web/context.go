@@ -26,6 +26,16 @@ func (c *Context) HTML(status int, name string, binding interface{}, htmlOpt ...
 func (c *Context) Data(status int, v []byte) error {
 	return c.Render.Data(c.Writer, status, v)
 }
+func (c *Context) Blob(status int, contextType string, v []byte) error {
+	head := render.Head{
+		ContentType: contextType,
+		Status:      status,
+	}
+	d := render.Data{
+		Head: head,
+	}
+	return c.Render.Render(c.Writer, d, v)
+}
 func (c *Context) JSON(status int, v interface{}) error {
 	return c.Render.JSON(c.Writer, status, v)
 }
@@ -35,9 +45,12 @@ func (c *Context) JSONP(status int, callback string, v interface{}) error {
 func (c *Context) XML(status int, v interface{}) error {
 	return c.Render.XML(c.Writer, status, v)
 }
-func (c *Context) Get(key string) string {
+func (c *Context) Param(key string) string {
 	if c.values == nil {
 		c.values = mux.Vars(c.Request)
 	}
 	return c.values[key]
+}
+func (c *Context) Get(key string) string {
+	return c.Param(key)
 }
