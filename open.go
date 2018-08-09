@@ -1,14 +1,26 @@
 package goutils
+
 import (
 	"fmt"
 	"os/exec"
 	"runtime"
 )
 
-var commands = map[string]string{
-	"windows": "cmd /c start",
-	"darwin":  "open",
-	"linux":   "xdg-open",
+var commands = map[string]func(uri string) error{
+	"windows": win,
+	"darwin":  def("open"),
+	"linux":   def("xdg-open"),
+}
+
+func win(uri string) error {
+	cmd := exec.Command("cmd", "/c", "start", uri)
+	return cmd.Start()
+}
+func def(cmd string) func(uri string) error {
+	return func(uri string) error {
+		cmd := exec.Command(cmd, uri)
+		return cmd.Start()
+	}
 }
 
 // Open calls the OS default program for uri
@@ -17,7 +29,5 @@ func Open(uri string) error {
 	if !ok {
 		return fmt.Errorf("未知的操作系统 %s .", runtime.GOOS)
 	}
-
-	cmd := exec.Command(run, uri)
-	return cmd.Start()
+	return run(uri)
 }
