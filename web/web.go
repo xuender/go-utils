@@ -15,6 +15,8 @@ type Web struct {
 	Render  *render.Render   // 输出
 	Negroni *negroni.Negroni // 服务
 	Name    string           // 名称
+	logger  *log.Logger      // 日志
+
 }
 
 func Classic(name string) *Web {
@@ -47,25 +49,28 @@ func newLogger(name string) *negroni.Logger {
 
 // ListenAndServe run
 func (w *Web) Run(addr string) {
-	l := log.New(os.Stdout, "["+w.Name+"] ", 0)
-	l.Printf("listening on %s", addr)
-	l.Fatal(http.ListenAndServe(addr, w.Negroni))
+	w.logger = log.New(os.Stdout, "["+w.Name+"] ", 0)
+	w.logger.Printf("listening on %s", addr)
+	w.logger.Fatal(http.ListenAndServe(addr, w.Negroni))
 }
-func (w *Web) Handle(path string, f func(c *Context)) *mux.Route {
+func (w *Web) Handle(path string, f func(c *Context) error) *mux.Route {
 	return w.Router.HandleFunc(path, func(writer http.ResponseWriter, req *http.Request) {
-		f(&Context{
+		err := f(&Context{
 			Writer:  writer,
 			Request: req,
 			Render:  w.Render,
 		})
+		if err != nil {
+			w.logger.Println(err.Error())
+		}
 	})
 }
-func (w *Web) GET(path string, f func(c *Context)) *mux.Route {
+func (w *Web) GET(path string, f func(c *Context) error) *mux.Route {
 	return w.Handle(path, f).Methods("GET")
 }
-func (w *Web) POST(path string, f func(c *Context)) *mux.Route {
+func (w *Web) POST(path string, f func(c *Context) error) *mux.Route {
 	return w.Handle(path, f).Methods("POST")
 }
-func (w *Web) PUT(path string, f func(c *Context)) *mux.Route {
+func (w *Web) PUT(path string, f func(c *Context) error) *mux.Route {
 	return w.Handle(path, f).Methods("PUT")
 }
