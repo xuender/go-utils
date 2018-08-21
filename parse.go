@@ -2,12 +2,11 @@ package goutils
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 	"strconv"
 )
 
-// Parse set p by def
+// Parse data update p by def
 func Parse(data []string, def map[int]string, p interface{}) error {
 	val := reflect.ValueOf(p)
 	kd := val.Kind()
@@ -21,7 +20,6 @@ func Parse(data []string, def map[int]string, p interface{}) error {
 			continue
 		}
 		f := val.Elem().FieldByName(v)
-		fmt.Println(f.Kind())
 		switch f.Kind() {
 		case reflect.String:
 			f.SetString(data[k])
