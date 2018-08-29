@@ -7,11 +7,11 @@ import (
 )
 
 // Parse data update p by def
-func Parse(data []string, def map[int]string, p interface{}) error {
+func Parse(data []string, def map[int]string, p interface{}) (map[string]string, error) {
 	val := reflect.ValueOf(p)
 	kd := val.Kind()
 	if kd != reflect.Ptr {
-		return errors.New("参数不是指针")
+		return nil, errors.New("参数不是指针")
 	}
 	property := make(map[string]string)
 	l := len(data)
@@ -39,5 +39,5 @@ func Parse(data []string, def map[int]string, p interface{}) error {
 			val.Elem().Field(i).Set(reflect.ValueOf(property))
 		}
 	}
-	return nil
+	return property, nil
 }
