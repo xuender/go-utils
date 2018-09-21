@@ -8,14 +8,15 @@ import (
 	"hash/fnv"
 )
 
-// 文件唯一标识
-type FileId struct {
+// FileID 文件唯一标识
+type FileID struct {
 	hash hash.Hash
 	size int64
 }
 
-func NewFileId(file string) (*FileId, error) {
-	id := new(FileId)
+// NewFileID 新建文件ID
+func NewFileID(file string) (*FileID, error) {
+	id := new(FileID)
 	id.hash = fnv.New128()
 	id.size = 0
 	if file == "" {
@@ -25,12 +26,13 @@ func NewFileId(file string) (*FileId, error) {
 	return id, err
 }
 
-func (f *FileId) Write(data []byte) (int, error) {
+func (f *FileID) Write(data []byte) (int, error) {
 	f.size += int64(len(data))
 	return f.hash.Write(data)
 }
 
-func (f *FileId) Id() []byte {
+// ID 文件ID
+func (f *FileID) ID() []byte {
 	bs := make([]byte, 8)
 	binary.LittleEndian.PutUint64(bs, uint64(f.size))
 	return bytes.Join([][]byte{
@@ -38,12 +40,12 @@ func (f *FileId) Id() []byte {
 		removeVacant(bs),
 	}, nil)
 }
-func (f *FileId) String() string {
-	return hex.EncodeToString(f.Id())
+func (f *FileID) String() string {
+	return hex.EncodeToString(f.ID())
 }
 func removeVacant(bytes []byte) []byte {
 	l := len(bytes)
-	for idx, _ := range bytes {
+	for idx := range bytes {
 		if bytes[l-idx-1] != 0 {
 			return bytes[:l-idx]
 		}

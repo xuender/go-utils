@@ -10,8 +10,8 @@ import (
 // ID is unique primary key
 type ID [18]byte
 
-// NewId is new ID
-func NewId(prefix byte) ID {
+// NewID is new ID
+func NewID(prefix byte) ID {
 	var ret ID
 	id := uuid.New()
 	ret[0] = prefix

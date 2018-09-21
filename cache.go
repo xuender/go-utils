@@ -133,7 +133,7 @@ func NewCache(expire time.Duration) *Cache {
 	}
 	ticker := time.NewTicker(t)
 	go func() {
-		for _ = range ticker.C {
+		for range ticker.C {
 			now := time.Now()
 			for key, v := range cache.access {
 				if now.Sub(v) > expire {

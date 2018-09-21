@@ -7,10 +7,10 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestId(t *testing.T) {
-	Convey("NewId", t, func() {
-		id := NewId('O')
-		Convey("Id", func() {
+func TestID(t *testing.T) {
+	Convey("NewID", t, func() {
+		id := NewID('O')
+		Convey("ID", func() {
 			So(len(id), ShouldEqual, 18)
 		})
 		Convey("String", func() {

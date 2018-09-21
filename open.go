@@ -27,7 +27,7 @@ func def(cmd string) func(uri string) error {
 func Open(uri string) error {
 	run, ok := commands[runtime.GOOS]
 	if !ok {
-		return fmt.Errorf("未知的操作系统 %s .", runtime.GOOS)
+		return fmt.Errorf("未知的操作系统 %s ./n", runtime.GOOS)
 	}
 	return run(uri)
 }
