@@ -14,12 +14,12 @@ func Filter(collection, predicate interface{}) (interface{}, error) {
 		rv = ptr.Elem()
 	}
 	if rv.Kind() != reflect.Slice && rv.Kind() != reflect.Array {
-		return nil, errors.New("The passed collection is not a slice and not a array")
+		return collection, errors.New("The passed collection is not a slice and not a array")
 	}
 	fn := reflect.ValueOf(predicate)
 	t := rv.Type().Elem()
 	if !verifyFilterFuncType(fn, t) {
-		return nil, errors.New("Function must be of type func(" + t.String() + ") bool or func(interface{}) bool")
+		return collection, errors.New("Function must be of type func(" + t.String() + ") bool or func(interface{}) bool")
 	}
 	var param [1]reflect.Value
 	out := reflect.MakeSlice(reflect.SliceOf(t), 0, rv.Len())
@@ -31,6 +31,7 @@ func Filter(collection, predicate interface{}) (interface{}, error) {
 	}
 	if isPointer && rv.Kind() == reflect.Slice {
 		rv.Set(out)
+		return collection, nil
 	}
 	return out.Interface(), nil
 }
