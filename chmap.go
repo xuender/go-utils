@@ -1,4 +1,4 @@
-package goutils
+package utils
 
 // ChMap is channel map.
 type ChMap struct {
