@@ -1,6 +1,7 @@
 package goutils
 
 import (
+	"bytes"
 	"encoding/json"
 
 	"github.com/google/uuid"
@@ -22,8 +23,18 @@ func NewID(prefix byte) ID {
 	return ret
 }
 
+var newPrefix = []byte{0, 0}
+
+// IsNew is New ID
+func (id ID) IsNew() bool {
+	return bytes.HasPrefix(id[:], newPrefix)
+}
+
 // String is ID to string
 func (id ID) String() string {
+	if id.IsNew() {
+		return ""
+	}
 	var u uuid.UUID
 	for i := 2; i < 18; i++ {
 		u[i-2] = id[i]

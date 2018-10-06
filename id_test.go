@@ -35,5 +35,9 @@ func TestID(t *testing.T) {
 			So(i[0], ShouldEqual, 'I')
 			So(i.String(), ShouldEqual, "I-Cekw67uyMpBGZLRP2HFVbe")
 		})
+		Convey("IsNew", func() {
+			So(ID{}.IsNew(), ShouldEqual, true)
+			So(id.IsNew(), ShouldEqual, false)
+		})
 	})
 }
