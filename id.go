@@ -56,6 +56,9 @@ func (id ID) Equal(other ID) bool {
 
 // Parse is string to ID
 func (id *ID) Parse(str string) (err error) {
+	if str == "" {
+		return
+	}
 	uuid, err := shortuuid.DefaultEncoder.Decode(str[2:])
 	if err != nil {
 		return
