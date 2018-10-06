@@ -1,4 +1,4 @@
-package goutils
+package utils
 
 import (
 	"testing"
@@ -43,4 +43,35 @@ func TestCache(t *testing.T) {
 		})
 
 	})
+}
+func BenchmarkCacheCount(b *testing.B) {
+	cache := NewCache(time.Second * 20)
+	defer cache.Close()
+	cache.Put(1, 1)
+	cache.Put(2, 2)
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		cache.Count()
+	}
+}
+
+func BenchmarkCachePut(b *testing.B) {
+	cache := NewCache(time.Second * 20)
+	defer cache.Close()
+	cache.Put(1, 1)
+	cache.Put(2, 2)
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		cache.Put(2, 2)
+	}
+}
+
+func BenchmarkMapPut(b *testing.B) {
+	cache := map[int]int{}
+	cache[1] = 1
+	cache[2] = 2
+	b.ResetTimer()
+	for n := 0; n < b.N; n++ {
+		cache[2] = 2
+	}
 }

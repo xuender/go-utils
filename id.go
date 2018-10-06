@@ -1,4 +1,4 @@
-package goutils
+package utils
 
 import (
 	"bytes"
@@ -47,6 +47,11 @@ func (id ID) String() string {
 		ret[i+2] = v
 	}
 	return string(ret)
+}
+
+// Equal returns a boolean reporting whether id and other
+func (id ID) Equal(other ID) bool {
+	return bytes.Equal(id[:], other[:])
 }
 
 // Parse is string to ID
