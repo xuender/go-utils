@@ -35,3 +35,14 @@ func TestSplitAfter(t *testing.T) {
 		})
 	})
 }
+
+func TestIncludes(t *testing.T) {
+	Convey("Includes", t, func() {
+		Convey("包含", func() {
+			array := []string{"1", "a"}
+			So(Includes(array, "1"), ShouldEqual, true)
+			So(Includes(array, "a"), ShouldEqual, true)
+			So(Includes(array, "b"), ShouldEqual, false)
+		})
+	})
+}

@@ -28,3 +28,18 @@ func SplitAfter(s string, sep ...string) []string {
 	}
 	return ret
 }
+
+// Includes 数组包含
+func Includes(array []string, objs ...string) bool {
+	if len(objs) == 0 {
+		return true
+	}
+	for _, a := range array {
+		for _, s := range objs {
+			if a == s {
+				return true
+			}
+		}
+	}
+	return false
+}
