@@ -28,6 +28,11 @@ func Parse(data []string, def map[int]string, p interface{}) (map[string]string,
 			if err == nil {
 				f.SetInt(int64(i))
 			}
+		case reflect.Int64:
+			i, err := strconv.Atoi(data[k])
+			if err == nil {
+				f.SetInt(int64(i))
+			}
 		case reflect.Invalid:
 			property[v] = data[k]
 		}
