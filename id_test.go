@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -40,4 +41,14 @@ func TestID(t *testing.T) {
 			So(id.IsNew(), ShouldEqual, false)
 		})
 	})
+}
+
+func ExampleNewID() {
+	fmt.Println(ID{}.IsNew())
+	id := NewID('A')
+	fmt.Println(id.IsNew())
+
+	// Output:
+	// true
+	// false
 }

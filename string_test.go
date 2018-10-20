@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -45,4 +46,11 @@ func TestIncludes(t *testing.T) {
 			So(Includes(array, "b"), ShouldEqual, false)
 		})
 	})
+}
+
+func ExampleSplitAfter() {
+	fmt.Println(SplitAfter("110120119129", "0", "9"))
+
+	// Output:
+	// [110 120 119 129]
 }

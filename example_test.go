@@ -10,24 +10,6 @@ func ExampleReadLines() {
 	}
 }
 
-func ExampleSplitAfter() {
-	fmt.Println(SplitAfter("110120119129", "0", "9"))
-	// Output:
-	// [110 120 119 129]
-}
-
-func ExamplePrefixBytes() {
-	fmt.Println(PrefixBytes([]byte("id-"), []byte("abc")))
-	// Output:
-	// [105 100 45 97 98 99]
-}
-
-func ExamplePrefixUint32() {
-	fmt.Println(PrefixUint32([]byte("id-"), 3))
-	// Output:
-	// [105 100 45 3 0 0 0]
-}
-
 func ExampleUniqueString() {
 	fmt.Println(UniqueString("U-"))
 	fmt.Println(UniqueString("K-"))
@@ -71,20 +53,4 @@ func ExampleChMap_Iterator() {
 	})
 	// Output:
 	// k: key, v: value
-}
-
-func ExampleJoin() {
-	a := []byte("aa")
-	b := []byte("bb")
-	fmt.Println(Join([]byte(","), a, b))
-	// Output:
-	// [97 97 44 98 98]
-}
-
-func ExampleConcat() {
-	a := []byte("aa")
-	b := []byte("bb")
-	fmt.Println(Concat(a, b))
-	// Output:
-	// [97 97 98 98]
 }
