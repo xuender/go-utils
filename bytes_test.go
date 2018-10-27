@@ -47,7 +47,7 @@ func ExampleDecode() {
 }
 
 func ExamplePrefixBytes() {
-	fmt.Println(PrefixBytes([]byte("id-"), []byte("abc")))
+	fmt.Println(PrefixBytes([]byte("abc"), 'i', 'd', '-'))
 
 	// Output:
 	// [105 100 45 97 98 99]
@@ -72,6 +72,13 @@ func ExampleConcat() {
 }
 
 func ExamplePrefixUint32() {
+	fmt.Println(PrefixUint32([]byte("id-"), 3))
+
+	// Output:
+	// [105 100 45 3 0 0 0]
+}
+
+func Example() {
 	fmt.Println(PrefixUint32([]byte("id-"), 3))
 
 	// Output:

@@ -22,7 +22,7 @@ func Encode(obj interface{}) ([]byte, error) {
 }
 
 // PrefixBytes is prefix add bytes to bytes.
-func PrefixBytes(prefix []byte, bs []byte) []byte {
+func PrefixBytes(bs []byte, prefix ...byte) []byte {
 	return Concat(prefix, bs)
 }
 
@@ -30,7 +30,7 @@ func PrefixBytes(prefix []byte, bs []byte) []byte {
 func PrefixUint32(prefix []byte, num uint32) []byte {
 	bs := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bs, num)
-	return PrefixBytes(prefix, bs)
+	return PrefixBytes(bs, prefix...)
 }
 
 // Join bytes.
