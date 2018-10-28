@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 
 	"github.com/google/uuid"
 	"github.com/lithammer/shortuuid"
@@ -69,6 +70,17 @@ func (id *ID) Parse(str string) (err error) {
 		id[2+i] = v
 	}
 	return
+}
+
+// ParseBytes is bytes to ID
+func (id *ID) ParseBytes(bs []byte) error {
+	if len(bs) < 18 {
+		return errors.New("bytes length < 18")
+	}
+	for i := 0; i < 18; i++ {
+		id[i] = bs[i]
+	}
+	return nil
 }
 
 // UnmarshalJSON is json Unmarshal

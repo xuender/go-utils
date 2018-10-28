@@ -23,6 +23,13 @@ func TestID(t *testing.T) {
 		Convey("Parse", func() {
 			So(len(id.String()), ShouldEqual, 24)
 		})
+		Convey("ParseBytes", func() {
+			bs := id[:]
+			i := new(ID)
+			err := i.ParseBytes(bs)
+			So(err, ShouldBeNil)
+			So(len(id.String()), ShouldEqual, 24)
+		})
 		Convey("JSON Marshal", func() {
 			b, _ := json.Marshal(id)
 			So(len(id), ShouldEqual, 18)
