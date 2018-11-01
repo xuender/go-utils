@@ -87,6 +87,17 @@ func ExampleIDS_Delete() {
 	// false
 }
 
+func ExampleIDS_Empty() {
+	ids := IDS{}
+
+	fmt.Println(ids.Empty())
+	ids.Add(NewID('A'))
+	fmt.Println(ids.Empty())
+
+	// Output:
+	// true
+	// false
+}
 func ExampleIDS_Intersect() {
 	ids := IDS{}
 	id := NewID('K')

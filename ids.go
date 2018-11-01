@@ -3,6 +3,11 @@ package utils
 // IDS slice ID
 type IDS []ID
 
+// Empty returns true if IDS is empty, else false.
+func (s *IDS) Empty() bool {
+	return len(*s) == 0
+}
+
 // Add ids
 func (s *IDS) Add(ids ...ID) []ID {
 	*s = append(*s, ids...)
