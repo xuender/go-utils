@@ -14,7 +14,7 @@ type ID [18]byte
 
 // NewID is new ID
 func NewID(prefix byte) ID {
-	var ret ID
+	ret := ID{}
 	id := uuid.New()
 	ret[0] = prefix
 	ret[1] = '-'
