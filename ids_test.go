@@ -110,6 +110,37 @@ func ExampleIDS_Intersect() {
 	// Output:
 	// 1
 }
+func ExampleIDS_Reverse() {
+	ids := IDS{}
+	id := NewID('A')
+	ids.Add(NewID('A'), NewID('A'))
+	ids.Add(id)
+
+	ids.Reverse()
+
+	fmt.Println(ids[0] == id)
+
+	// Output:
+	// true
+}
+func ExampleIDS_Distinct() {
+	ids := IDS{}
+	id := NewID('A')
+	ids.Add(NewID('A'), NewID('A'))
+	ids.Add(id)
+	ids.Add(NewID('A'), NewID('A'), NewID('A'), NewID('A'))
+	ids.Add(id)
+
+	fmt.Println(len(ids))
+	ids.Distinct()
+	fmt.Println(len(ids))
+	fmt.Println(ids[2] == id)
+
+	// Output:
+	// 8
+	// 7
+	// true
+}
 func BenchmarkContains(b *testing.B) {
 	b.StopTimer()
 	ids := IDS{}
