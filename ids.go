@@ -50,6 +50,21 @@ func (s *IDS) Delete(ids ...ID) []ID {
 	return *s
 }
 
+// DeleteIndex removes all occurrences of index in the ID slice.
+func (s *IDS) DeleteIndex(index ...int) []ID {
+	size := len(index)
+	if size == 0 {
+		return *s
+	}
+	if size > 1 {
+		sort.Sort(sort.Reverse(sort.IntSlice(index)))
+	}
+	for _, i := range index {
+		*s = append((*s)[:i], (*s)[i+1:]...)
+	}
+	return *s
+}
+
 // Intersect returns the slice of intersecting id.
 // Union see Add
 // Except see Delete
@@ -75,15 +90,15 @@ func (s *IDS) Reverse() []ID {
 
 // Distinct returns the new duplicate free slice.
 func (s *IDS) Distinct() []ID {
-	m := map[ID]int{}
-	s.Reverse()
+	m := map[ID]bool{}
+	index := []int{}
 	for i, id := range *s {
-		m[id] = i
+		if _, has := m[id]; has {
+			index = append(index, i)
+		} else {
+			m[id] = true
+		}
 	}
-	*s = IDS{}
-	for id := range m {
-		s.Add(id)
-	}
-	sort.Slice(*s, func(i, j int) bool { return m[(*s)[j]] < m[(*s)[i]] })
+	s.DeleteIndex(index...)
 	return *s
 }

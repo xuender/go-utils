@@ -87,6 +87,24 @@ func ExampleIDS_Delete() {
 	// false
 }
 
+func ExampleIDS_DeleteIndex() {
+	ids := IDS{}
+	id := NewID('K')
+	ids.Add(NewID('A'), NewID('A'))
+	ids.Add(id)
+
+	fmt.Println(len(ids))
+	fmt.Println(ids.Contains(id))
+	fmt.Println(len(ids.DeleteIndex(1, 2)))
+	fmt.Println(ids.Contains(id))
+
+	// Output:
+	// 3
+	// true
+	// 1
+	// false
+}
+
 func ExampleIDS_Empty() {
 	ids := IDS{}
 
@@ -152,5 +170,20 @@ func BenchmarkContains(b *testing.B) {
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		ids.Contains(id)
+	}
+}
+
+func BenchmarkDistinct(b *testing.B) {
+	b.StopTimer()
+	ids := IDS{}
+	id := NewID('A')
+	ids.Add(id)
+	for i := 0; i < 1000; i++ {
+		ids.Add(NewID('A'))
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		ids.Distinct()
+		ids.Add(id)
 	}
 }
