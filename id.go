@@ -24,11 +24,9 @@ func NewID(prefix byte) ID {
 	return ret
 }
 
-var newPrefix = []byte{0, 0}
-
 // IsNew is New ID
 func (id ID) IsNew() bool {
-	return bytes.HasPrefix(id[:], newPrefix)
+	return id[1] != '-'
 }
 
 // String is ID to string
