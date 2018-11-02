@@ -8,7 +8,7 @@ import (
 	"hash/fnv"
 )
 
-// FileID 文件唯一标识
+// FileID file ID.
 type FileID struct {
 	hash hash.Hash
 	size int64

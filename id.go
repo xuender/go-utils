@@ -9,6 +9,9 @@ import (
 	"github.com/lithammer/shortuuid"
 )
 
+// IDSplitByte split byte
+const IDSplitByte = '-'
+
 // ID is unique primary key
 type ID [18]byte
 
@@ -17,7 +20,7 @@ func NewID(prefix byte) ID {
 	ret := ID{}
 	id := uuid.New()
 	ret[0] = prefix
-	ret[1] = '-'
+	ret[1] = IDSplitByte
 	for i, v := range id {
 		ret[2+i] = v
 	}
@@ -26,7 +29,7 @@ func NewID(prefix byte) ID {
 
 // IsNew is New ID
 func (id ID) IsNew() bool {
-	return id[1] != '-'
+	return id[1] != IDSplitByte
 }
 
 // String is ID to string

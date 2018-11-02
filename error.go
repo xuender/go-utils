@@ -2,7 +2,7 @@ package utils
 
 import "log"
 
-// CheckError 检查错误.
+// CheckError check error.
 func CheckError(err error) {
 	if nil != err {
 		log.Panicln(err)
