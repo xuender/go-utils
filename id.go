@@ -61,14 +61,12 @@ func (id *ID) Parse(str string) (err error) {
 	if str == "" {
 		return
 	}
-	uuid, err := shortuuid.DefaultEncoder.Decode(str[2:])
-	if err != nil {
-		return
-	}
-	id[0] = str[0]
-	id[1] = str[1]
-	for i, v := range uuid {
-		id[2+i] = v
+	if uuid, err := shortuuid.DefaultEncoder.Decode(str[2:]); err == nil {
+		id[0] = str[0]
+		id[1] = str[1]
+		for i, v := range uuid {
+			id[2+i] = v
+		}
 	}
 	return
 }

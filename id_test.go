@@ -5,49 +5,52 @@ import (
 	"fmt"
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestID(t *testing.T) {
-	Convey("NewID", t, func() {
-		id := NewID('O')
-		Convey("ID", func() {
-			So(len(id), ShouldEqual, 18)
-		})
-		Convey("String", func() {
-			i := new(ID)
-			err := i.Parse("I-Cekw67uyMpBGZLRP2HFVbe")
-			So(err, ShouldBeNil)
-			So(i[0], ShouldEqual, 'I')
-		})
-		Convey("Parse", func() {
-			So(len(id.String()), ShouldEqual, 24)
-		})
-		Convey("ParseBytes", func() {
-			bs := id[:]
-			i := new(ID)
-			err := i.ParseBytes(bs)
-			So(err, ShouldBeNil)
-			So(len(id.String()), ShouldEqual, 24)
-		})
-		Convey("JSON Marshal", func() {
-			b, _ := json.Marshal(id)
-			So(len(id), ShouldEqual, 18)
-			So(len(b), ShouldEqual, 26)
-		})
-		Convey("JSON Unarshal", func() {
-			i := new(ID)
-			err := json.Unmarshal([]byte(`"I-Cekw67uyMpBGZLRP2HFVbe"`), i)
-			So(err, ShouldBeNil)
-			So(len(i), ShouldEqual, 18)
-			So(i[0], ShouldEqual, 'I')
-			So(i.String(), ShouldEqual, "I-Cekw67uyMpBGZLRP2HFVbe")
-		})
-		Convey("IsNew", func() {
-			So(ID{}.IsNew(), ShouldEqual, true)
-			So(id.IsNew(), ShouldEqual, false)
-		})
-	})
+	assert := assert.New(t)
+	id := NewID('O')
+
+	assert.Len(id, 18)
+	assert.Len(id.String(), 24)
+	assert.True(ID{}.IsNew())
+	assert.False(id.IsNew())
+
+	b, err := json.Marshal(id)
+
+	assert.Len(id, 18)
+	assert.Len(b, 26)
+	assert.Nil(err)
+}
+func TestID_String(t *testing.T) {
+	assert := assert.New(t)
+	i := new(ID)
+	err := i.Parse("I-Cekw67uyMpBGZLRP2HFVbe")
+
+	assert.Nil(err)
+	assert.EqualValues(i[0], 'I')
+	assert.EqualValues(i[1], '-')
+}
+func TestID_ParseBytes(t *testing.T) {
+	assert := assert.New(t)
+	id := NewID('O')
+	bs := id[:]
+	i := new(ID)
+	err := i.ParseBytes(bs)
+
+	assert.Nil(err)
+	assert.Len(i.String(), 24)
+}
+func TestID_UnmarshalJSON(t *testing.T) {
+	assert := assert.New(t)
+	i := new(ID)
+	err := json.Unmarshal([]byte(`"I-Cekw67uyMpBGZLRP2HFVbe"`), i)
+
+	assert.Nil(err)
+	assert.Len(i[:], 18)
+	assert.EqualValues(i[0], 'I')
+	assert.Equal(i.String(), "I-Cekw67uyMpBGZLRP2HFVbe")
 }
 
 func ExampleNewID() {

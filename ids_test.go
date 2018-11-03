@@ -4,24 +4,20 @@ import (
 	"fmt"
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIDS(t *testing.T) {
-	Convey("NewIDS", t, func() {
-		ids := IDS{}
-		id := NewID('A')
-		ids.Add(id)
-		Convey("len", func() {
-			So(len(ids), ShouldEqual, 1)
-		})
-		Convey("Add", func() {
-			b := IDS{}
-			b.Add(NewID('A'), NewID('A'), NewID('A'))
-			ids.Add(b...)
-			So(len(ids), ShouldEqual, 4)
-		})
-	})
+	assert := assert.New(t)
+	ids := IDS{}
+	id := NewID('A')
+	ids.Add(id)
+	assert.Equal(len(ids), 1)
+
+	b := IDS{}
+	b.Add(NewID('A'), NewID('A'), NewID('A'))
+	ids.Add(b...)
+	assert.Equal(len(ids), 4)
 }
 
 func ExampleIDS() {
