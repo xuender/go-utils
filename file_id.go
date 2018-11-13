@@ -17,7 +17,7 @@ type FileID struct {
 // NewFileID 新建文件ID
 func NewFileID(file string) (*FileID, error) {
 	id := new(FileID)
-	id.hash = fnv.New128()
+	id.hash = fnv.New64a()
 	id.Size = 0
 	if file == "" {
 		return id, nil
