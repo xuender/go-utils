@@ -11,14 +11,14 @@ import (
 // FileID file ID.
 type FileID struct {
 	hash hash.Hash
-	size int64
+	Size int64
 }
 
 // NewFileID 新建文件ID
 func NewFileID(file string) (*FileID, error) {
 	id := new(FileID)
 	id.hash = fnv.New128()
-	id.size = 0
+	id.Size = 0
 	if file == "" {
 		return id, nil
 	}
@@ -27,14 +27,14 @@ func NewFileID(file string) (*FileID, error) {
 }
 
 func (f *FileID) Write(data []byte) (int, error) {
-	f.size += int64(len(data))
+	f.Size += int64(len(data))
 	return f.hash.Write(data)
 }
 
 // ID 文件ID
 func (f *FileID) ID() []byte {
 	bs := make([]byte, 8)
-	binary.LittleEndian.PutUint64(bs, uint64(f.size))
+	binary.LittleEndian.PutUint64(bs, uint64(f.Size))
 	return bytes.Join([][]byte{
 		f.hash.Sum(nil),
 		removeVacant(bs),
