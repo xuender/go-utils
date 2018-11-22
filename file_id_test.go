@@ -11,7 +11,7 @@ func TestNewFileId(t *testing.T) {
 		Convey("Write", func() {
 			id, _ := NewFileID("")
 			id.Write([]byte("xxx"))
-			So(id.String(), ShouldEqual, "bff7b2198029378f03")
+			So(id.String(), ShouldEqual, "a68d8af56c8b5822836dbc798864a9ff03")
 		})
 		Convey("error", func() {
 			_, err := NewFileID("/dfdfdfd")
@@ -20,7 +20,7 @@ func TestNewFileId(t *testing.T) {
 		Convey("String", func() {
 			id, err := NewFileID("LICENSE")
 			So(err, ShouldBeNil)
-			So(id.String(), ShouldEqual, "a0a0d77cad2926d13104")
+			So(id.String(), ShouldEqual, "d63d326f93123e0400d1766f34d379813104")
 		})
 	})
 }
